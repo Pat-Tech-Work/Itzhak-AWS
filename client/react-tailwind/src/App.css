@@ -1,0 +1,21 @@
+.image-container {
+  width: 100vw;
+  height: 80vh;
+  position: relative;
+  overflow: hidden;
+}
+
+.bg-image {
+  width: 100%;
+  height: 100%;
+  background-image: url('/bg.jpg');
+  background-size: cover;
+  background-position: center;
+  object-fit: none; /* לא צריך כיוון שהתמונה כבר מוגדרת כרקע */
+}
+
+@media (max-width: 768px) {
+  .image-container {
+    height: 50vh; /* בשימוש בסמארטפונים או מסכים קטנים */
+  }
+}

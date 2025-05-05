@@ -1,0 +1,43 @@
+/*
+POST
+http://localhost:4000/api/surveys
+
+{
+
+  "orderNumber": "5555",
+  "email": "555t@example.com",
+  "satisfied": "Yes",
+  "updates": true,
+  "product": "Laptop",
+  "marketplace": "Amazon",
+  "satisfaction": "High",
+  "usageDuration": "1 year",
+  "name": "John Doe",
+  "phoneNumber": "123456789",
+  "specialOffers": false
+
+}
+
+
+ 1. העלאת קובץ של קופונים (upload)
+URL: http://localhost:4000/api/couponCode/upload
+Method: POST
+Body > form-data:
+Key: couponFile
+
+
+📤 2. קבלת כל הקופונים הזמינים
+URL: http://localhost:4000/api/couponCode
+Method: GET
+📌 מקבל את כל הקופונים שעדיין לא הוקצו.
+
+ 3. הקצאת קופון להזמנה
+URL: http://localhost:4000/api/couponCode/assign
+Method: POST
+Body > raw > JSON:
+
+{
+  "orderNumber": "OrderNumberAWS345"
+}
+ אם יש קופון זמין – יוחזר couponCode. אם לא – תחזור הודעת שגיאה.
+*/

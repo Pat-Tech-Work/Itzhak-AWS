@@ -1,0 +1,32 @@
+// $ npm init -y 
+// $ npm i
+// $ npm i --force
+// $ npm i express
+// $ npm i cors
+// $ npm i mongoose
+// $ npm install dotenv
+// $ node main.js --->  $ nodemon main.js
+// $ npm install multer csv-parser xlsx
+// $ npm install googleapis עבור קריאה של אקסל בענן
+// npm install
+
+Running the server:
+$ nodemon main.js
+
+
+client-
+$ npm run dev
+
+
+
+// איך לעלות לגיט אהב:
+$ git init
+$ git add .
+$ git commit -m "Add my files"
+$ git branch -M main
+$ git remote add origin https://github.com/Pat-Tech-Work/Itzhak-AWS.git
+$ git push -u origin main
+
+
+פעם שנייה:
+git pull origin main
