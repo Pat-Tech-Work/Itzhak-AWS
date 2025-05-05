@@ -8,7 +8,10 @@
 // $ node main.js --->  $ nodemon main.js
 // $ npm install multer csv-parser xlsx
 // $ npm install googleapis עבור קריאה של אקסל בענן
+עבור העלה לגיט אהב:
 // npm install
+// npm init -y
+
 
 Running the server:
 $ nodemon main.js
