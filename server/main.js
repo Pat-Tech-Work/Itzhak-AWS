@@ -12,7 +12,8 @@ const cors = require('cors');
 
 const app = express();
 app.use(cors({
-  origin: 'http://localhost:5173',
+  //origin: 'http://localhost:5173'
+  origin: 'https://itzhak-aws-vkmdh.ondigitalocean.app/',
   credentials: true, // Allows sending cookies
 }));
 app.use(express.json());
