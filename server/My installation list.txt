@@ -30,6 +30,3 @@ $ git branch -M main
 $ git remote add origin https://github.com/Pat-Tech-Work/Itzhak-AWS.git
 $ git push -u origin main
 
-
-פעם שנייה:
-git pull origin main
