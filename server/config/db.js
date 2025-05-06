@@ -1,4 +1,4 @@
-/* // עבור העלאה לענן
+ // עבור העלאה לענן
 
 const mongoose = require('mongoose');
 require('dotenv').config();
@@ -17,8 +17,8 @@ const connectDB = async () => {
 };
 
 module.exports = connectDB;
-*/
 
+/*
 // db.js
 const mongoose = require('mongoose'); // connection to Database
 
@@ -35,3 +35,4 @@ const connectDB = () => { // The function at the end I will run at main.js
 };
 
 module.exports = connectDB;
+*/
