@@ -18,7 +18,7 @@ const Dashboard = () => {
     const fetchSurveys = async () => {
       try {
         setLoading(true);
-        const response = await axios.get('http://localhost:4000/api/survey');
+        const response = await axios.get('https://itzhak-aws-vkmdh.ondigitalocean.app/itzhak-aws-server/api/survey');
         setSurveys(response.data);
         setLoading(false);
       } catch (error) {
