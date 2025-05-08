@@ -1,7 +1,7 @@
 // SurveyService.jsx
 
 export const createSurvey = async (surveyData) => {
-  const response = await fetch("https://itzhak-aws-vkmdh.ondigitalocean.app/itzhak-aws-server/survey", {
+  const response = await fetch("https://itzhak-aws-vkmdh.ondigitalocean.app/api/itzhak-aws-server/survey", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
