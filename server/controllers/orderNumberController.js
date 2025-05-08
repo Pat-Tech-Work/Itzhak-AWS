@@ -18,18 +18,15 @@ router.get('/', async (req, res) => {
 // הנתיב שמחזיר את פרטי ההזמנה לפי מספר הזמנה
 router.get('/:orderNumber', async (req, res) => {
   const { orderNumber } = req.params;
-  console.log("מחפש הזמנה עם מספר:", orderNumber);
   try {
     const order = await orderService.validateOrderNumber(orderNumber);
     if (!order) {
-      console.log("לא נמצא במסד!");
       return res.status(404).json({ error: 'Order number not found' });
     }
-    res.json(order);
+    res.json(order);  // מחזיר את כל פרטי ההזמנה אם היא קיימת
   } catch (err) {
     console.error("Failed to fetch order number details:", err);
     res.status(500).json({ error: 'Failed to fetch order number details' });
   }
 });
-
 module.exports = router;
