@@ -11,11 +11,8 @@ const uri = process.env.MONGO_URI;
 // const ca = fs.readFileSync('./path/to/ca-certificate.crt');
 
 const clientOptions = {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  // ssl: true, // לא חובה אם את ב-mongodb+srv
-  // sslCA: ca, // רק אם יש קובץ CA
   serverApi: { version: '1', strict: true, deprecationErrors: true }
+  // אין צורך ב-useNewUrlParser או useUnifiedTopology
 };
 
 const connectDB = async () => {
@@ -27,6 +24,7 @@ const connectDB = async () => {
     process.exit(1);
   }
 };
+
 
 module.exports = connectDB;
 
