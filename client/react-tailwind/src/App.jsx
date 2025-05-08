@@ -8,6 +8,7 @@ import Step_4 from "./Pages/Step_4";
 import SuccessPage from "./Pages/SuccessPage";
 
 import Dashboard from "./Pages/Dashboard";
+import CouponUpload from "./Services/CouponUpload";
 
 
 
@@ -24,6 +25,7 @@ function App() {
                 <Route path="/step_4" element={<Step_4 />} />
                 <Route path="/success" element={<SuccessPage />} /> 
                 <Route path="/dashboard" element={<Dashboard />} /> 
+                <Route path="/upload-coupons" element={<CouponUpload />} />
 
             </Routes>
         </Router>
