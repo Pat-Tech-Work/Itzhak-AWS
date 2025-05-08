@@ -2,13 +2,7 @@
 
 // db.js
 const mongoose = require('mongoose');
-const fs = require('fs');
-require('dotenv').config();
-
 const uri = process.env.MONGO_URI;
-
-// אם DigitalOcean דורש קובץ CA, הוסיפי אותו כאן
-// const ca = fs.readFileSync('./path/to/ca-certificate.crt');
 
 const clientOptions = {
   serverApi: { version: '1', strict: true, deprecationErrors: true }
@@ -25,9 +19,7 @@ const connectDB = async () => {
   }
 };
 
-
 module.exports = connectDB;
-
 
 /*
 // db.js
