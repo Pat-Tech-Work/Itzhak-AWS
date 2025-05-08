@@ -1,9 +1,20 @@
  // עבור העלאה לענן
 
+// db.js
 const mongoose = require('mongoose');
+const fs = require('fs');
+require('dotenv').config();
+
 const uri = process.env.MONGO_URI;
 
+// אם DigitalOcean דורש קובץ CA, הוסיפי אותו כאן
+// const ca = fs.readFileSync('./path/to/ca-certificate.crt');
+
 const clientOptions = {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  // ssl: true, // לא חובה אם את ב-mongodb+srv
+  // sslCA: ca, // רק אם יש קובץ CA
   serverApi: { version: '1', strict: true, deprecationErrors: true }
 };
 
@@ -13,7 +24,7 @@ const connectDB = async () => {
     console.log("MongoDB connected successfully.");
   } catch (error) {
     console.error("MongoDB connection failed:", error.message);
-    process.exit(1); // Exit the process if connection fails
+    process.exit(1);
   }
 };
 
