@@ -60,17 +60,19 @@ router.post('/upload', upload.single('couponFile'), async (req, res) => {
   const coupons = [];
 
   try {
-    if (extension === '.xlsx') {
+    if (extension === '.xlsx' || extension === '.xls') {
       const workbook = xlsx.readFile(filePath);
       const sheet = workbook.Sheets[workbook.SheetNames[0]];
       const data = xlsx.utils.sheet_to_json(sheet);
 
       data.forEach(row => {
-        coupons.push({
-          couponCode: row['Coupon Code'],
-          discount: parseFloat(row['Discount']),
-          expiration: new Date(row['Expiration Date']),
-        });
+        if (row['Coupon Code'] && row['Discount'] && row['Expiration Date']) {
+          coupons.push({
+            couponCode: row['Coupon Code'],
+            discount: parseFloat(row['Discount']),
+            expiration: new Date(row['Expiration Date']),
+          });
+        }
       });
 
       const addedCoupons = await couponService.addCoupons(coupons);
@@ -82,11 +84,13 @@ router.post('/upload', upload.single('couponFile'), async (req, res) => {
       fs.createReadStream(filePath)
         .pipe(csvParser())
         .on('data', (row) => {
-          coupons.push({
-            couponCode: row['Coupon Code'],
-            discount: parseFloat(row['Discount']),
-            expiration: new Date(row['Expiration Date']),
-          });
+          if (row['Coupon Code'] && row['Discount'] && row['Expiration Date']) {
+            coupons.push({
+              couponCode: row['Coupon Code'],
+              discount: parseFloat(row['Discount']),
+              expiration: new Date(row['Expiration Date']),
+            });
+          }
         })
         .on('end', async () => {
           try {
@@ -95,17 +99,25 @@ router.post('/upload', upload.single('couponFile'), async (req, res) => {
 
             res.status(201).json({ message: 'Coupons uploaded', coupons: addedCoupons });
           } catch (err) {
+            fs.unlinkSync(filePath);
             res.status(500).json({ error: 'Error adding coupons to database' });
           }
+        })
+        .on('error', (err) => {
+          fs.unlinkSync(filePath);
+          res.status(500).json({ error: 'Error processing CSV file' });
         });
 
     } else {
+      fs.unlinkSync(filePath);
       return res.status(400).json({ error: 'Unsupported file type' });
     }
   } catch (err) {
+    fs.unlinkSync(filePath);
     res.status(500).json({ error: 'Error processing file' });
   }
 });
+
 
 // Sync coupons from Google Sheets
 // POST http://localhost:4000/api/couponCode/sync-google-sheet
