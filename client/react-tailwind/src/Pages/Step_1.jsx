@@ -15,7 +15,7 @@ function Step_1() {
 const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-        const response = await fetch(`https://itzhak-aws-vkmdh.ondigitalocean.app/itzhak-aws-server/api/orderNumber/${formData.orderNumber}`);
+        const response = await fetch(`https://itzhak-aws-vkmdh.ondigitalocean.app/itzhak-aws-server/orderNumber/${formData.orderNumber}`);
 
         if (!response.ok) {
             setError("Order number not found. Please check and try again.");
