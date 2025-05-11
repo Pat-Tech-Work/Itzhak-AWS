@@ -36,7 +36,7 @@ function Step_4() {
     };
 
     const handleAmazonClick = () => {
-        window.open("https://www.amazon.com", "_blank");
+        window.open("https://hevracom.store/", "_blank");
     };
 
     // פונקציה להעתקת הטקסט של הביקורת
