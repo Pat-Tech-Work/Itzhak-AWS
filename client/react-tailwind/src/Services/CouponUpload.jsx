@@ -19,7 +19,7 @@ function CouponUpload() {
     formData.append('couponFile', file);
 
     try {
-      const response = await fetch('https://itzhak-aws-vkmdh.ondigitalocean.app/itzhak-aws-server/api/couponCode/upload', {
+      const response = await fetch('https://itzhak-aws-vkmdh.ondigitalocean.app/api/couponCode/upload', {
         method: 'POST',
         body: formData,
       });
