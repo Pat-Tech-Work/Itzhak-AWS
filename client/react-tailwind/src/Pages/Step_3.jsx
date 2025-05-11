@@ -7,9 +7,14 @@ function Step_3() {
 
     // קבלת הנתונים מהדף הקודם או מה-localStorage
     const previousData = location.state || JSON.parse(localStorage.getItem("surveyData")) || {};
-
+    const productASINMap = {
+        "HevraCom Premium Hangers": "B0DX6TDHV1",
+        "50 White Plastic Hangers": "B0DX6T9C3R",
+        "Multi Size Plastic Hangers": "B0DX6SKZSR"
+    };
     const [formData, setFormData] = useState({
         product: "",
+        productASIN: "",
         marketplace: "",
         satisfaction: "",
         usageDuration: "",
@@ -34,20 +39,29 @@ function Step_3() {
         navigate("/step_4", { state: formData });
     };
 
+// הוסף useEffect לעדכון productASIN בכל שינוי product:
+useEffect(() => {
+    const asin = productASINMap[formData.product] || '';
+    setFormData(prev => ({
+        ...prev,
+        productASIN: asin
+    }));
+    // eslint-disable-next-line
+}, [formData.product]);
     return (
         <div className="min-h-screen bg-gray-100 flex items-center justify-center">
-            
+
             <div className="bg-white shadow-md rounded-lg p-6 w-full max-w-md">
-            <img src="/HevraCom-logo.png"
-                            className="mx-auto h-20 w-auto"
-                        />
+                <img src="/HevraCom-logo.png"
+                    className="mx-auto h-20 w-auto"
+                />
                 <h2 className="text-lg font-semibold text-center mb-4">🎁 Free Amazon Gift Card</h2>
                 <p className="text-sm text-gray-600 text-center mb-6">Complete the form to get your free gift!</p>
                 <div className="mt-4 flex justify-center">
-                            <div className="inline-flex items-center px-3 py-1 rounded-full bg-indigo-100 text-indigo-800">
-                                <span className="text-sm font-medium">Step 3 of 4</span>
-                            </div>
-                        </div>
+                    <div className="inline-flex items-center px-3 py-1 rounded-full bg-indigo-100 text-indigo-800">
+                        <span className="text-sm font-medium">Step 3 of 4</span>
+                    </div>
+                </div>
                 <form onSubmit={handleSubmit}>
                     {/* Product Selection */}
                     <div className="mb-4">
@@ -64,6 +78,8 @@ function Step_3() {
                         >
                             <option value="">Select a product</option>
                             <option value="HevraCom Premium Hangers">HevraCom Premium Hangers </option>
+                            <option value="50 White Plastic Hangers">50 White Plastic Hangers</option>
+                            <option value="Multi Size Plastic Hangers">Multi Size Plastic Hangers</option>
                         </select>
                     </div>
 
@@ -112,7 +128,7 @@ function Step_3() {
                     {/* Usage Duration */}
                     <div className="mb-4">
                         <label htmlFor="usageDuration" className="block text-sm font-medium text-gray-700 mb-1">
-                            How long have you been using the product? 
+                            How long have you been using the product?
                         </label>
                         <select
                             id="usageDuration"
