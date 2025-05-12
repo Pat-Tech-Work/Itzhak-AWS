@@ -18,47 +18,54 @@ function Step_2() {
     updates: false
   });
 
-// List of common country codes (sorted alphabetically by country)
-const countryCodes = [
-  { code: "+61", country: "Australia" },
-  { code: "+55", country: "Brazil" },
-  { code: "+86", country: "China" },
-  { code: "+20", country: "Egypt" },
-  { code: "+45", country: "Denmark" },
-  { code: "+33", country: "France" },
-  { code: "+49", country: "Germany"},
-  { code: "+91", country: "India" },
-  { code: "+62", country: "Indonesia" },
-  { code: "+972", country: "Israel" },
-  { code: "+81", country: "Japan" },
-  { code: "+39", country: "Italy" },
-  { code: "+52", country: "Mexico" },
-  { code: "+31", country: "Netherlands" },
-  { code: "+47", country: "Norway"},
-  { code: "+63", country: "Philippines" },
-  { code: "+48", country: "Poland"},
-  { code: "+351", country: "Portugal" },
-  { code: "+7", country: "Russia" },
-  { code: "+966", country: "Saudi Arabia" },
-  { code: "+27", country: "South Africa" },
-  { code: "+82", country: "South Korea"},
-  { code: "+386", country: "Slovenia" },
-  { code: "+34", country: "Spain" },
-  { code: "+46", country: "Sweden" },
-  { code: "+41", country: "Switzerland" },
-  { code: "+90", country: "Turkey" },
-  { code: "+44", country: "UK" },
-  { code: "+1", country: "USA"}
-];
+  // List of common country codes (sorted alphabetically by country)
+  const countryCodes = [
+    { code: "+61", country: "Australia" },
+    { code: "+55", country: "Brazil" },
+    { code: "+86", country: "China" },
+    { code: "+20", country: "Egypt" },
+    { code: "+45", country: "Denmark" },
+    { code: "+33", country: "France" },
+    { code: "+49", country: "Germany" },
+    { code: "+91", country: "India" },
+    { code: "+62", country: "Indonesia" },
+    { code: "+972", country: "Israel" },
+    { code: "+81", country: "Japan" },
+    { code: "+39", country: "Italy" },
+    { code: "+52", country: "Mexico" },
+    { code: "+31", country: "Netherlands" },
+    { code: "+47", country: "Norway" },
+    { code: "+63", country: "Philippines" },
+    { code: "+48", country: "Poland" },
+    { code: "+351", country: "Portugal" },
+    { code: "+7", country: "Russia" },
+    { code: "+966", country: "Saudi Arabia" },
+    { code: "+27", country: "South Africa" },
+    { code: "+82", country: "South Korea" },
+    { code: "+386", country: "Slovenia" },
+    { code: "+34", country: "Spain" },
+    { code: "+46", country: "Sweden" },
+    { code: "+41", country: "Switzerland" },
+    { code: "+90", country: "Turkey" },
+    { code: "+44", country: "UK" },
+    { code: "+1", country: "USA" }
+  ];
 
 
   const [showTooltip, setShowTooltip] = useState(false);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
+    let updatedValue = value;
+
+    if (name === "phoneNumber") {
+      // הסרה של כל תו שהוא לא ספרה
+      updatedValue = value.replace(/\D/g, "");
+    }
+
     setFormData({
       ...formData,
-      [name]: type === "checkbox" ? checked : value
+      [name]: type === "checkbox" ? checked : updatedValue
     });
   };
 
@@ -150,33 +157,33 @@ const countryCodes = [
               />
             </div>
 
-                {/* Phone Number Input with Country Code */}
-                <div>
-                <label className="block text-gray-700 font-medium text-sm mb-0.5">Your Phone Number <span className="text-indigo-500">*</span></label>
-                <div className="flex gap-2">
-                    <select
-                      name="countryCode"
-                      value={formData.countryCode}
-                      onChange={handleChange}
-                      className="px-2 py-1.5 rounded-md border border-gray-200 bg-gray-50 text-sm"
-                    >
-                      {countryCodes.map(country => (
-                        <option key={country.code} value={country.code}>
-                         {country.code} {country.country}
-                        </option>
-                      ))}
-                    </select>
-                    <input
-                      type="tel"
-                      name="phoneNumber"
-                      value={formData.phoneNumber}
-                      onChange={handleChange}
-                      placeholder="Enter phone number e.g. 234-456-7890"
+            {/* Phone Number Input with Country Code */}
+            <div>
+              <label className="block text-gray-700 font-medium text-sm mb-0.5">Your Phone Number <span className="text-indigo-500">*</span></label>
+              <div className="flex gap-2">
+                <select
+                  name="countryCode"
+                  value={formData.countryCode}
+                  onChange={handleChange}
+                  className="px-2 py-1.5 rounded-md border border-gray-200 bg-gray-50 text-sm"
+                >
+                  {countryCodes.map(country => (
+                    <option key={country.code} value={country.code}>
+                      {country.code} {country.country}
+                    </option>
+                  ))}
+                </select>
+                <input
+                  type="text"
+                  name="phoneNumber"
+                  value={formData.phoneNumber}
+                  onChange={handleChange}
+                  placeholder="Enter phone number e.g. 234-456-7890"
 
-                      className="flex-1 px-3 py-1.5 rounded-md border border-gray-200 bg-gray-50 text-sm"
-                    />
-                  </div>
-                </div>
+                  className="flex-1 px-3 py-1.5 rounded-md border border-gray-200 bg-gray-50 text-sm"
+                />
+              </div>
+            </div>
 
 
 
