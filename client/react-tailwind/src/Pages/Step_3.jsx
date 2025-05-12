@@ -7,14 +7,9 @@ function Step_3() {
 
     // קבלת הנתונים מהדף הקודם או מה-localStorage
     const previousData = location.state || JSON.parse(localStorage.getItem("surveyData")) || {};
-    const productASINMap = {
-        "HevraCom Premium Hangers": "B0DX6TDHV1",
-        "50 White Plastic Hangers": "B0DX6T9C3R",
-        "Multi Size Plastic Hangers": "B0DX6SKZSR"
-    };
+
     const [formData, setFormData] = useState({
         product: "",
-        productASIN: "",
         marketplace: "",
         satisfaction: "",
         usageDuration: "",
@@ -39,15 +34,6 @@ function Step_3() {
         navigate("/step_4", { state: formData });
     };
 
-// הוסף useEffect לעדכון productASIN בכל שינוי product:
-useEffect(() => {
-    const asin = productASINMap[formData.product] || '';
-    setFormData(prev => ({
-        ...prev,
-        productASIN: asin
-    }));
-    // eslint-disable-next-line
-}, [formData.product]);
     return (
         <div className="min-h-screen bg-gray-100 flex items-center justify-center">
 
@@ -117,11 +103,11 @@ useEffect(() => {
                             className="w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
                         >
                             <option value="">Select a satisfaction level</option>
-                            <option value="1">Very Satisfied</option>
-                            <option value="2">Satisfied</option>
-                            <option value="3">Neutral</option>
-                            <option value="4">Dissatisfied</option>
-                            <option value="5">Very Dissatisfied</option>
+                            <option value="1 - Very Satisfied">Very Satisfied</option>
+                            <option value="2 - Satisfied ">Satisfied</option>
+                            <option value="3 - Neutral">Neutral</option>
+                            <option value="4 - Dissatisfied">Dissatisfied</option>
+                            <option value="5 - Very Dissatisfied">Very Dissatisfied</option>
                         </select>
                     </div>
 
