@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { createSurvey } from "../Services/SurveyService";
+import amazonProductLinks from '../Services/productLinks';
 
 function Step_4() {
     const navigate = useNavigate();
@@ -29,20 +30,8 @@ function Step_4() {
         navigate("/step_3", { state: formData });
     };
 
-    const productReviewLinkMap = {
-        "HevraCom Premium Hangers": "https://www.amazon.com/review/create-review?asin=B0DX6TDHV1",
-        "50 White Plastic Hangers": "https://www.amazon.com/review/create-review?asin=B0DX6T9C3R",
-        "Multi Size Plastic Hangers": "https://www.amazon.com/review/create-review?asin=B0DX6SKZSR",
-    };
 
-    const amazonReviewLink = productReviewLinkMap[formData.product];
-
-    const handleAmazonClick = () => {
-        if (formData.productASIN) {
-            const amazonUrl = `https://www.amazon.com/review/create-review?asin=${formData.productASIN}`;
-            window.open(amazonUrl, "_blank");
-        }
-    };
+    const productLink = amazonProductLinks[formData.product];
 
     const copyToClipboard = () => {
         navigator.clipboard.writeText(formData.review)
@@ -96,7 +85,7 @@ function Step_4() {
 
             <div className="container mx-auto px-3 sm:px-4 -mt-8 sm:-mt-10 lg:-mt-14 mb-10">
                 <div className="w-full max-w-md sm:max-w-lg lg:max-w-2xl mx-auto bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden p-4 sm:p-6">
-                    <img 
+                    <img
                         src="/HevraCom-logo.png"
                         className="mx-auto h-12 sm:h-14 w-auto mt-2 mb-2"
                         alt="HevraCom Logo"
@@ -114,7 +103,7 @@ function Step_4() {
                     </div>
 
                     <form onSubmit={handleSubmit} className="space-y-5">
-        
+
 
                         <div>
                             <div className="flex justify-between items-start mb-1">
@@ -148,10 +137,10 @@ function Step_4() {
                                 required
                             />
                         </div>
-                {formData.marketplace === "Amazon" && amazonReviewLink && (
+                        {productLink && (
                             <div className="text-center mt-6">
                                 <a
-                                    href={amazonReviewLink}
+                                    href={productLink}
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className="inline-block bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-2 px-4 rounded"
@@ -160,6 +149,7 @@ function Step_4() {
                                 </a>
                             </div>
                         )}
+
                         <div className="flex justify-between">
                             <button
                                 type="button"
