@@ -45,37 +45,47 @@ function Step_4() {
             });
     };
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+ const handleSubmit = async (e) => {
+    e.preventDefault();
 
-        if (!formData.review) {
-            alert("חסר שדה ביקורת");
-            return;
-        }
+    if (!formData.review) {
+        alert("חסר שדה ביקורת");
+        return;
+    }
 
-        if (!formData.orderNumber || !formData.email || !formData.satisfied || !formData.name) {
-            alert("חסרים נתונים חשובים");
-            return;
-        }
+    if (!formData.orderNumber || !formData.email || !formData.satisfied || !formData.name) {
+        alert("חסרים נתונים חשובים");
+        return;
+    }
 
-        try {
-            const response = await createSurvey(formData);
-            localStorage.removeItem("surveyData");
-            navigate("/success", { state: { couponCode: response.couponCode } });
-        } catch (error) {
-            console.error(error);
-            if (error.response && error.response.data) {
-                if (error.response.data.couponCode) {
-                    localStorage.removeItem("surveyData");
-                    navigate("/success", { state: { couponCode: error.response.data.couponCode } });
-                } else {
-                    alert(error.response.data.error || error.message);
-                }
-            } else {
-                alert(error.message);
+    try {
+        const response = await createSurvey(formData);
+        localStorage.removeItem("surveyData");
+        navigate("/success", {
+            state: {
+                couponCode: response.couponCode,
+                couponExpirationDate: response.couponExpirationDate
             }
+        });
+    } catch (error) {
+        console.error(error);
+        if (error.response && error.response.data) {
+            if (error.response.data.couponCode) {
+                localStorage.removeItem("surveyData");
+                navigate("/success", {
+                    state: {
+                        couponCode: error.response.data.couponCode,
+                        couponExpirationDate: error.response.data.couponExpirationDate
+                    }
+                });
+            } else {
+                alert(error.response.data.error || error.message);
+            }
+        } else {
+            alert(error.message);
         }
-    };
+    }
+};
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50">
@@ -103,8 +113,6 @@ function Step_4() {
                     </div>
 
                     <form onSubmit={handleSubmit} className="space-y-5">
-
-
                         <div>
                             <div className="flex justify-between items-start mb-1">
                                 <label htmlFor="review" className="text-sm font-medium text-gray-700">
