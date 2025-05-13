@@ -67,7 +67,7 @@ function Step_1() {
         setError("The order number is not in the system. Please check and try again.");
         return;
       }
-      const surveyCheck = await fetch(`https://itzhak-aws-vkmdh.ondigitalocean.app/api/survey/check/${formData.orderNumber}`);
+      const surveyCheck = await fetch(`https://itzhak-aws-vkmdh.ondigitalocean.app/itzhak-aws-server/api/survey/check/${formData.orderNumber}`);
       const surveyData = await surveyCheck.json();
 
       if (surveyData.exists) {
