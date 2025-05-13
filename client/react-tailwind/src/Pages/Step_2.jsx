@@ -51,7 +51,6 @@ function Step_2() {
     { code: "+1", country: "USA" }
   ];
 
-
   const [showTooltip, setShowTooltip] = useState(false);
 
   const handleChange = (e) => {
@@ -79,7 +78,6 @@ function Step_2() {
       phoneNumber: fullPhoneNumber
     };
     navigate("/step_3", { state: updatedFormData });
-
   };
 
   const isFormValid = formData.orderNumber && formData.email && formData.satisfied && formData.name;
@@ -185,8 +183,6 @@ function Step_2() {
               </div>
             </div>
 
-
-
             <div className="flex items-center">
               <input
                 type="checkbox"
@@ -253,7 +249,6 @@ function Step_2() {
       </div>
     </div>
   );
-
 }
 
 export default Step_2;
