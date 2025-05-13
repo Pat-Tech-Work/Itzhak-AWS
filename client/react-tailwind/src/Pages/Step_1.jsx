@@ -61,13 +61,13 @@ function Step_1() {
     e.preventDefault();
 
     try {
-      const orderCheck = await fetch(`https://itzhak-aws-vkmdh.ondigitalocean.app/api/orderNumber/${formData.orderNumber}`);
+      const orderCheck = await fetch(`https://itzhak-aws-vkmdh.ondigitalocean.app/itzhak-aws-server/api/orderNumber/${formData.orderNumber}`);
         
       if (orderCheck.status === 404) {
         setError("The order number is not in the system. Please check and try again.");
         return;
       }
-      const surveyCheck = await fetch(`https://itzhak-aws-vkmdh.ondigitalocean.app/api/survey/check/${formData.orderNumber}`);
+      const surveyCheck = await fetch(`https://itzhak-aws-vkmdh.ondigitalocean.app/itzhak-aws-server/api/survey/check/${formData.orderNumber}`);
       const surveyData = await surveyCheck.json();
 
       if (surveyData.exists) {
@@ -81,7 +81,7 @@ function Step_1() {
         const fullPhone = formData.countryCode + formData.phoneNumber;
 
         const verifyCheck = await fetch(
-          `https://itzhak-aws-vkmdh.ondigitalocean.app/api/survey/verify/${formData.orderNumber}/${fullPhone}`
+          `https://itzhak-aws-vkmdh.ondigitalocean.app/itzhak-aws-server/api/survey/verify/${formData.orderNumber}/${fullPhone}`
         );
         const verifyData = await verifyCheck.json();
 
