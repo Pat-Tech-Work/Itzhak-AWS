@@ -61,7 +61,7 @@ function Step_1() {
     e.preventDefault();
 
     try {
-      const orderCheck = await fetch(`https://itzhak-aws-vkmdh.ondigitalocean.app/itzhak-aws-server/api/orderNumber/${formData.orderNumber}`);
+      const orderCheck = await fetch(`https://itzhak-aws-vkmdh.ondigitalocean.app/api/orderNumber/${formData.orderNumber}`);
         
       if (orderCheck.status === 404) {
         setError("The order number is not in the system. Please check and try again.");
