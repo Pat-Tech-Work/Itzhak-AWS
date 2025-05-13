@@ -31,7 +31,10 @@ const assignCoupon = async (orderNumber) => {
   await usedCouponRepo.addUsedCoupon(coupon.couponCode, orderNumber);
   await couponRepo.deleteCoupon(coupon._id);
 
-  return coupon.couponCode;
+  return {
+    couponCode: coupon.couponCode,
+    couponExpirationDate: coupon.couponExpirationDate,
+  };
 };
 
 module.exports = {
