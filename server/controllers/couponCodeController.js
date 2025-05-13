@@ -1,4 +1,3 @@
-// couponCodeController.js
 const multer = require('multer');
 const xlsx = require('xlsx');
 const csvParser = require('csv-parser');
@@ -8,9 +7,23 @@ const express = require('express');
 const router = express.Router();
 const couponService = require('../services/couponCodeService');
 const googleSheetsService = require('../services/googleSheetsService');
+const { log } = require('console');
+
+// פונקציית עזר להמרת תאריכים בצורה בטוחה
+function parseDate(value) {
+  if (!value) return null;
+
+  if (typeof value === 'number') {
+    // תאריך בפורמט מספרי של Excel
+    return new Date(Date.UTC(1900, 0, value - 1));
+  }
+
+  // תאריך כמחרוזת
+  const date = new Date(value);
+  return isNaN(date.getTime()) ? null : date;
+}
 
 // GET all coupons
-// GET http://localhost:4000/api/couponCode
 router.get("/", async (req, res) => {
   try {
     const coupons = await couponService.getAllCoupons();
@@ -21,7 +34,6 @@ router.get("/", async (req, res) => {
 });
 
 // Assign a coupon to an order
-// POST http://localhost:4000/api/couponCode/assign
 router.post("/assign", async (req, res) => {
   try {
     const { orderNumber } = req.body;
@@ -31,15 +43,13 @@ router.post("/assign", async (req, res) => {
     if (!coupon) return res.status(409).json({
       error: "An error occurred, please contact customer service and attach a screenshot (Coupon code error: 0505)"
     });
-
-    res.json({ couponCode: coupon });
+    res.json({ couponCode: coupon.couponCode, couponExpirationDate: coupon.couponExpirationDate });
   } catch (err) {
     res.status(500).json({ error: "Error assigning coupon" });
   }
 });
 
 // File upload route (XLSX or CSV)
-// POST http://localhost:4000/api/couponCode/upload
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, 'uploads/');
@@ -70,7 +80,7 @@ router.post('/upload', upload.single('couponFile'), async (req, res) => {
           coupons.push({
             couponCode: row['Coupon Code'],
             discount: parseFloat(row['Discount']),
-            expiration: new Date(row['Expiration Date']),
+            couponExpirationDate: parseDate(row['Expiration Date']),
           });
         }
       });
@@ -88,7 +98,7 @@ router.post('/upload', upload.single('couponFile'), async (req, res) => {
             coupons.push({
               couponCode: row['Coupon Code'],
               discount: parseFloat(row['Discount']),
-              expiration: new Date(row['Expiration Date']),
+              couponExpirationDate: parseDate(row['Expiration Date']),
             });
           }
         })
@@ -118,22 +128,5 @@ router.post('/upload', upload.single('couponFile'), async (req, res) => {
   }
 });
 
-
-// Sync coupons from Google Sheets
-// POST http://localhost:4000/api/couponCode/sync-google-sheet
-/* router.post('/sync-google-sheet', async (req, res) => {
-  try {
-    const sheetId = 'YOUR_SHEET_ID_HERE';
-    const range = 'Sheet1!A1:C';
-
-    const coupons = await googleSheetsService.getCouponsFromGoogleSheet(sheetId, range);
-    const addedCoupons = await couponService.addCoupons(coupons);
-
-    res.status(201).json({ message: 'Coupons synced from Google Sheet', coupons: addedCoupons });
-  } catch (error) {
-    console.error("Error syncing Google Sheet:", error);
-    res.status(500).json({ error: "Failed to sync from Google Sheet" });
-  }
-});
-*/
+// Optional: sync from Google Sheets (commented out)
 module.exports = router;
