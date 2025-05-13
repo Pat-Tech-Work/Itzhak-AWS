@@ -81,7 +81,7 @@ function Step_1() {
         const fullPhone = formData.countryCode + formData.phoneNumber;
 
         const verifyCheck = await fetch(
-          `http://localhost:4000/api/survey/verify/${formData.orderNumber}/${fullPhone}`
+          `https://itzhak-aws-vkmdh.ondigitalocean.app/api/survey/verify/${formData.orderNumber}/${fullPhone}`
         );
         const verifyData = await verifyCheck.json();
 
