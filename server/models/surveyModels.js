@@ -14,8 +14,9 @@ const surveySchema = new mongoose.Schema({
     phoneNumber: { type: String },
     submittedAt: { type: Date, default: Date.now },
     couponCode: { type: String },
+    couponExpirationDate: { type: Date}, // תוספת
     ipAddress: { type: String },
-    review: { type: String }, // <-- הוספה כאן
+    review: { type: String }, 
 
 }, { versionKey: false });
 
