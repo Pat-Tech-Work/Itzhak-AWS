@@ -11,11 +11,16 @@ const usedCouponRouter = require('./controllers/usedCouponController');
 const cors = require('cors');
 
 const app = express();
+
 app.use(cors({
-  //origin: 'http://localhost:5173'
-  origin: 'https://itzhak-aws-vkmdh.ondigitalocean.app/',
+  origin: [
+    'http://localhost:5173',
+    'https://itzhak-aws-vkmdh.ondigitalocean.app',
+    'https://hevracom.shop'
+  ],
   credentials: true, // Allows sending cookies
 }));
+
 app.use(express.json());
 connectDB();
 app.set('trust proxy', true);
