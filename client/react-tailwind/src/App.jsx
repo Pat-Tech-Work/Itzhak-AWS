@@ -24,7 +24,7 @@ function App() {
                 <Route path="/step_3" element={<Step_3 />} />
                 <Route path="/step_4" element={<Step_4 />} />
                 <Route path="/success" element={<SuccessPage />} /> 
-                <Route path="/dashboard" element={<Dashboard />} /> 
+                {/* <Route path="/dashboard" element={<Dashboard />} /> */}
                 <Route path="/upload-coupons" element={<CouponUpload />} />
 
             </Routes>
