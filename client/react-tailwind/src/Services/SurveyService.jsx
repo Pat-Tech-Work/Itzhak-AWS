@@ -1,13 +1,15 @@
 // SurveyService.jsx
+const baseURL = import.meta.env.VITE_API_BASE_URL;
 
 export const createSurvey = async (surveyData) => {
-  const response = await fetch("https://itzhak-aws-vkmdh.ondigitalocean.app/itzhak-aws-server/api/survey", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(surveyData),
-  });
+  const response = await fetch(`${baseURL}/survey`, //"https://itzhak-aws-vkmdh.ondigitalocean.app/api/survey"
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(surveyData),
+    });
 
   if (!response.ok) {
     const errorData = await response.json();
@@ -18,9 +20,10 @@ export const createSurvey = async (surveyData) => {
 
   return await response.json();
 };
+
 // 25/5/2025
 export const fetchSurveys = async () => {
-  const response = await axios.get('https://itzhak-aws-vkmdh.ondigitalocean.app/itzhak-aws-server/apisurvey', {
+  const response = await axios.get(`${baseURL}/survey`, {
     withCredentials: true
   });
   return response.data;
@@ -28,19 +31,19 @@ export const fetchSurveys = async () => {
 
 // בודק אם מספר הזמנה קיים // 25/5/2025
 export const checkOrderNumber = async (orderNumber) => {
-  const response = await fetch(`https://itzhak-aws-vkmdh.ondigitalocean.app/itzhak-aws-server/api/orderNumber/${orderNumber}`);
+  const response = await fetch(`${baseURL}/orderNumber/${orderNumber}`);
   return response;
 };
 
 // בודק אם הסקר קיים לפי מספר הזמנה // 25/5/2025
 export const checkSurveyExists = async (orderNumber) => {
-  const response = await fetch(`https://itzhak-aws-vkmdh.ondigitalocean.app/itzhak-aws-server/api/survey/check/${orderNumber}`);
+  const response = await fetch(`${baseURL}/survey/check/${orderNumber}`);
   return await response.json();
 };
 
 // מאמת טלפון עם מספר ההזמנה // 25/5/2025
 export const verifyPhoneNumber = async (orderNumber, fullPhone) => {
-  const response = await fetch(`https://itzhak-aws-vkmdh.ondigitalocean.app/itzhak-aws-server/api/survey/verify/${orderNumber}/${fullPhone}`);
+  const response = await fetch(`${baseURL}/survey/verify/${orderNumber}/${fullPhone}`);
   const data = await response.json();
   return { status: response.status, data };
 };
@@ -50,7 +53,7 @@ import axios from 'axios';
 
 export const loginDashboard = async (email, password) => {
   try {
-    const response = await axios.post('https://itzhak-aws-vkmdh.ondigitalocean.app/itzhak-aws-server/api/login', {
+    const response = await axios.post(`${baseURL}/login`, {
       email,
       password
     }, {
@@ -65,7 +68,7 @@ export const loginDashboard = async (email, password) => {
 
 // מאמת אם המשתמש מחובר // 25/5/2025
 export const verifyToken = async () => {
-  const response = await axios.get('https://itzhak-aws-vkmdh.ondigitalocean.app/itzhak-aws-server/api/verify-token', {
+  const response = await axios.get(`${baseURL}/verify-token`, {
     withCredentials: true
   });
   return response.data;
