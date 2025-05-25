@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { uploadCouponFile } from "../Services/SurveyService"; 
 
 function CouponUpload() {
   const [file, setFile] = useState(null);
@@ -9,33 +10,20 @@ function CouponUpload() {
     setMessage("");
   };
 
-  const handleUpload = async (e) => {
-    e.preventDefault();
-    if (!file) {
-      setMessage("Please select a file to upload.");
-      return;
-    }
-    const formData = new FormData();
-    formData.append('couponFile', file);
+const handleUpload = async (e) => {
+  e.preventDefault();
+  if (!file) {
+    setMessage("Please select a file to upload.");
+    return;
+  }
 
-    try {
-      const response = await fetch('https://itzhak-aws-vkmdh.ondigitalocean.app/itzhak-aws-server/api/couponCode/upload', {
-        method: 'POST',
-        body: formData,
-      });
-
-      if (!response.ok) {
-        const error = await response.json();
-        setMessage(error.error || "Upload failed");
-        return;
-      }
-
-      const result = await response.json();
-      setMessage("Upload successful! " + (result.message || ""));
-    } catch (err) {
-      setMessage("Server error. Try again later.");
-    }
-  };
+  try {
+    const result = await uploadCouponFile(file);
+    setMessage("Upload successful! " + (result.message || ""));
+  } catch (err) {
+    setMessage(err.message || "Upload failed.");
+  }
+};
 
   return (
     <div className="max-w-md mx-auto mt-8 p-6 bg-white rounded shadow">
