@@ -60,41 +60,37 @@ function Step_1() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    try {
-      const orderCheck = await fetch(`https://itzhak-aws-vkmdh.ondigitalocean.app/itzhak-aws-server/api/orderNumber/${formData.orderNumber}`);
-        
-      if (orderCheck.status === 404) {
-        setError("The order number is not in the system. Please check and try again.");
+try { // 25/5/2025
+    const orderCheck = await checkOrderNumber(formData.orderNumber);
+    if (orderCheck.status === 404) {
+      setError("The order number is not in the system. Please check and try again.");
+      return;
+    }
+
+    const surveyData = await checkSurveyExists(formData.orderNumber);
+
+    if (surveyData.exists) {
+      setShowPhoneInput(true);
+
+      if (!formData.phoneNumber) {
+        setPhonePrompt("This order already has a survey. Please enter your phone number to retrieve your coupon.");
         return;
       }
-      const surveyCheck = await fetch(`https://itzhak-aws-vkmdh.ondigitalocean.app/itzhak-aws-server/api/survey/check/${formData.orderNumber}`);
-      const surveyData = await surveyCheck.json();
 
-      if (surveyData.exists) {
-        setShowPhoneInput(true);
+      const fullPhone = formData.countryCode + formData.phoneNumber;
 
-        if (!formData.phoneNumber) {
-          setPhonePrompt("This order already has a survey. Please enter your phone number to retrieve your coupon.");
-          return;
-        }
+      const { status, data } = await verifyPhoneNumber(formData.orderNumber, fullPhone);
 
-        const fullPhone = formData.countryCode + formData.phoneNumber;
-
-        const verifyCheck = await fetch(
-          `https://itzhak-aws-vkmdh.ondigitalocean.app/itzhak-aws-server/api/survey/verify/${formData.orderNumber}/${fullPhone}`
-        );
-        const verifyData = await verifyCheck.json();
-
-        if (verifyCheck.status === 200 && verifyData.verified) {
-          setCouponCode(verifyData.couponCode);
-          setCouponExpirationDate(verifyData.couponExpirationDate);
-          setPhonePrompt("");
-        } else {
-          setPhonePrompt("Phone number does not match the one used in the survey.");
-        }
-
-        return;
+      if (status === 200 && data.verified) {
+        setCouponCode(data.couponCode);
+        setCouponExpirationDate(data.couponExpirationDate);
+        setPhonePrompt("");
+      } else {
+        setPhonePrompt("Phone number does not match the one used in the survey.");
       }
+
+      return;
+    }
 
       // אין סקר קיים – מעבר לשלב הבא
       localStorage.setItem("orderNumber", formData.orderNumber);
