@@ -73,3 +73,27 @@ export const verifyToken = async () => {
   });
   return response.data;
 };
+// 25/5/2025
+export const uploadCouponFile = async (file) => {
+  const formData = new FormData();
+  formData.append('couponFile', file);
+
+  try {
+    const response = await fetch(`${baseURL}/couponCode/upload`, {
+      method: 'POST',
+      body: formData,
+    });
+
+    const result = await response.json();
+
+    if (!response.ok) {
+      const error = new Error(result.error || "Upload failed");
+      error.response = result;
+      throw error;
+    }
+
+    return result;
+  } catch (err) {
+    throw new Error("Server error. Try again later.");
+  }
+};
