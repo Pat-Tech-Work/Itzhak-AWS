@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import { fetchSurveys } from '../Services/SurveyService' // התאמת הנתיב לפי הצורך // 25/5/2025
 
 const satisfactionLevels = {
   "1 - Very Satisfied": "Very Satisfied",
@@ -15,22 +15,23 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    const fetchSurveys = async () => {
+ useEffect(() => { // 25/5/2025
+    const getSurveys = async () => {
       try {
         setLoading(true);
-        const response = await axios.get('https://itzhak-aws-vkmdh.ondigitalocean.app/itzhak-aws-server/api/survey');
-        setSurveys(response.data);
+        const data = await fetchSurveys();
+        setSurveys(data);
         setLoading(false);
-      } catch (error) {
-        console.error('Error fetching surveys:', error);
+      } catch (err) {
+        console.error('Error fetching surveys:', err);
         setError('Failed to load survey data');
         setLoading(false);
       }
     };
 
-    fetchSurveys();
+    getSurveys();
   }, []);
+
 
   const getSatisfactionColor = (level) => {
     const colors = {
