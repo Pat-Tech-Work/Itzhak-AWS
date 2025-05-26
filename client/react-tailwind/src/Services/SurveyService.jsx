@@ -9,6 +9,8 @@ export const createSurvey = async (surveyData) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(surveyData),
+      credentials: "include" // 26/5/2025
+
     });
 
   if (!response.ok) {
@@ -21,13 +23,22 @@ export const createSurvey = async (surveyData) => {
   return await response.json();
 };
 
-// 25/5/2025
+// 26/5/2025
+// מביא סקרים (מוגן)
 export const fetchSurveys = async () => {
-  const response = await axios.get(`${baseURL}/survey`, {
-    withCredentials: true
-  });
-  return response.data;
+  try {
+    const response = await axios.get(`${baseURL}/survey`, {
+      withCredentials: true
+    });
+    return response.data;
+  } catch (error) {
+    if (error.response?.status === 401) {
+      throw new Error("Unauthorized - Please login");
+    }
+    throw new Error("Failed to fetch surveys");
+  }
 };
+
 
 // בודק אם מספר הזמנה קיים // 25/5/2025
 export const checkOrderNumber = async (orderNumber) => {
@@ -50,7 +61,11 @@ export const verifyPhoneNumber = async (orderNumber, fullPhone) => {
 
 // SurveyService.jsx // 25/5/2025
 import axios from 'axios';
+// הגדרת axios עם עוגיות
+axios.defaults.withCredentials = true; // 26/5/2025
 
+
+// 26/5/2025
 export const loginDashboard = async (email, password) => {
   try {
     const response = await axios.post(`${baseURL}/login`, {
@@ -66,14 +81,32 @@ export const loginDashboard = async (email, password) => {
   }
 };
 
-// מאמת אם המשתמש מחובר // 25/5/2025
+// מאמת אם המשתמש מחובר // 26/5/2025
+// מאמת טוקן
 export const verifyToken = async () => {
-  const response = await axios.get(`${baseURL}/verify-token`, {
-    withCredentials: true
-  });
-  return response.data;
+  try {
+    const response = await axios.get(`${baseURL}/login/verify-token`, {
+      withCredentials: true
+    });
+    return response.data;
+  } catch (error) {
+    throw new Error("Token verification failed");
+  }
 };
-// 25/5/2025
+
+// 26/5/2025
+// התנתקות
+export const logout = async () => {
+  try {
+    await axios.post(`${baseURL}/login/logout`, {}, {
+      withCredentials: true
+    });
+  } catch (error) {
+    console.error('Logout error:', error);
+  }
+};
+// 26/5/2025
+// העלאת קובץ קופונים
 export const uploadCouponFile = async (file) => {
   const formData = new FormData();
   formData.append('couponFile', file);
@@ -82,6 +115,7 @@ export const uploadCouponFile = async (file) => {
     const response = await fetch(`${baseURL}/couponCode/upload`, {
       method: 'POST',
       body: formData,
+      credentials: "include"
     });
 
     const result = await response.json();
