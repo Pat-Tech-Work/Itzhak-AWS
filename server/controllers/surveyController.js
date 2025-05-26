@@ -4,7 +4,9 @@ const router = express.Router();
 const surveyService = require('../services/surveyService');
 const orderNumberService = require('../services/orderNumberService');
 const couponCodeService = require('../services/couponCodeService');
+//const verifyToken = require('../middleware/jwtAuth'); // ניצור מיד 25/5/2025
 
+/*
 // GET http://localhost:4000/api/survey
 // קבלת כל הסקרים
 router.get('/', async (req, res) => {
@@ -14,6 +16,20 @@ router.get('/', async (req, res) => {
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
+});
+*/
+const jwtAuth = require('../middleware/jwtAuth'); // 26/5/2025
+
+// 26/5/2025
+// מביא את כל הסקרים (מוגן!) 
+router.get('/', jwtAuth, async (req, res) => {
+  try {
+    const surveys = await surveyService.getAllSurveys();
+    res.json(surveys);
+  } catch (error) {
+    console.error('Error fetching surveys:', error);
+    res.status(500).json({ error: 'Failed to fetch surveys' });
+  }
 });
 
 // POST http://localhost:4000/api/survey
