@@ -24,11 +24,12 @@ function App() {
 
                 <Route path="/step_3" element={<Step_3 />} />
                 <Route path="/step_4" element={<Step_4 />} />
-                <Route path="/success" element={<SuccessPage />} /> 
+                <Route path="/success" element={<SuccessPage />} />
+
                 <Route path="/dashboard" element={<ProtectedRoute> <Dashboard /> </ProtectedRoute>} /> 
                 <Route path="/upload-coupons" element={<CouponUpload />} />
 
-               <Route path="/login" element={<Login />} /
+               <Route path="/login" element={<Login />} />  
 
             </Routes>
         </Router>
