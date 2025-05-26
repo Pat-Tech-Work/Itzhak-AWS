@@ -9,13 +9,12 @@ const satisfactionLevels = {
   "5 - Very Dissatisfied": "Very Dissatisfied"
 };
 
-
 const Dashboard = () => {
   const [surveys, setSurveys] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
- useEffect(() => { // 25/5/2025
+  useEffect(() => { // 25/5/2025
     const getSurveys = async () => {
       try {
         setLoading(true);
@@ -31,7 +30,6 @@ const Dashboard = () => {
 
     getSurveys();
   }, []);
-
 
   const getSatisfactionColor = (level) => {
     const colors = {
@@ -59,6 +57,14 @@ const Dashboard = () => {
       hour: '2-digit',
       minute: '2-digit'
     });
+
+  };
+  const handleLogout = () => {
+    // לדוגמה: אם את משתמשת ב-token, מחקי אותו
+    localStorage.removeItem('token');
+
+    // ניתוב חזרה לדף הכניסה
+    window.location.href = '/login'; // או כל נתיב אחר של דף הכניסה שלך
   };
 
   return (
@@ -73,60 +79,68 @@ const Dashboard = () => {
         ) : error ? (
           <div className="text-center py-10 text-red-600">{error}</div>
         ) : (
- <div className="overflow-x-auto">
-  <table className="min-w-full table-auto border-collapse text-sm">
-    <thead>
-      <tr className="bg-gray-100 text-gray-700 font-semibold">
-        <th className="px-2 py-3">#</th>
-        <th className="px-2 py-3">Order</th>
-        <th className="px-2 py-3">Email</th>
-        <th className="px-2 py-3">Product</th>
-        <th className="px-2 py-3">Marketplace</th>
-        <th className="px-2 py-3">Satisfaction</th>
-        <th className="px-2 py-3">Updates</th>
-        <th className="px-2 py-3">Duration</th>
-        <th className="px-2 py-3">Coupon</th>
-        <th className="px-2 py-3">Submitted</th>
-        <th className="px-2 py-3">Expiration</th>
-      </tr>
-    </thead>
-    <tbody>
-      {surveys.length > 0 ? (
-        surveys.map((survey, index) => (
-          <tr key={survey._id} className={index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
-            <td className="border-t px-2 py-2 text-gray-800">{index + 1}</td>
-            <td className="border-t px-2 py-2 text-gray-800 whitespace-nowrap">{survey.orderNumber}</td>
-            <td className="border-t px-2 py-2 text-gray-800 truncate max-w-[120px]">{survey.email}</td>
-            <td className="border-t px-2 py-2 text-gray-800 truncate max-w-[100px]">{survey.product}</td>
-            <td className="border-t px-2 py-2 text-gray-800">{survey.marketplace}</td>
-            <td className="border-t px-2 py-2">
-              <span className={`px-2 py-1 rounded-full text-xs ${getSatisfactionColor(survey.satisfaction)}`}>
-                {satisfactionLevels[survey.satisfaction] || 'Not Provided'}
-              </span>
-            </td>
-            <td className="border-t px-2 py-2">{renderYesNo(survey.updates)}</td>
-            <td className="border-t px-2 py-2 text-gray-800">{survey.usageDuration}</td>
-            <td className="border-t px-2 py-2 text-gray-800">{survey.couponCode}</td>
-            <td className="border-t px-2 py-2 text-gray-800 whitespace-nowrap">{formatDate(survey.submittedAt)}</td>
-            <td className="border-t px-2 py-2 text-gray-800 whitespace-nowrap">{formatDate(survey.couponExpirationDate)}</td>
-          </tr>
-        ))
-      ) : (
-        <tr>
-          <td colSpan="11" className="text-center py-10 text-gray-500">
-            No survey data available.
-          </td>
-        </tr>
-      )}
-    </tbody>
-  </table>
-</div>
-
+          <div className="overflow-x-auto">
+            <table className="min-w-full table-auto border-collapse text-sm">
+              <thead>
+                <tr className="bg-gray-100 text-gray-700 font-semibold">
+                  <th className="px-2 py-3">#</th>
+                  <th className="px-2 py-3">Order</th>
+                  <th className="px-2 py-3">Email</th>
+                  <th className="px-2 py-3">Product</th>
+                  <th className="px-2 py-3">Marketplace</th>
+                  <th className="px-2 py-3">Satisfaction</th>
+                  <th className="px-2 py-3">Updates</th>
+                  <th className="px-2 py-3">Duration</th>
+                  <th className="px-2 py-3">Coupon</th>
+                  <th className="px-2 py-3">Submitted</th>
+                  <th className="px-2 py-3">Expiration</th>
+                </tr>
+              </thead>
+              <tbody>
+                {surveys.length > 0 ? (
+                  surveys.map((survey, index) => (
+                    <tr key={survey._id} className={index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
+                      <td className="border-t px-2 py-2 text-gray-800">{index + 1}</td>
+                      <td className="border-t px-2 py-2 text-gray-800 whitespace-nowrap">{survey.orderNumber}</td>
+                      <td className="border-t px-2 py-2 text-gray-800 truncate max-w-[120px]">{survey.email}</td>
+                      <td className="border-t px-2 py-2 text-gray-800 truncate max-w-[100px]">{survey.product}</td>
+                      <td className="border-t px-2 py-2 text-gray-800">{survey.marketplace}</td>
+                      <td className="border-t px-2 py-2">
+                        <span className={`px-2 py-1 rounded-full text-xs ${getSatisfactionColor(survey.satisfaction)}`}>
+                          {satisfactionLevels[survey.satisfaction] || 'Not Provided'}
+                        </span>
+                      </td>
+                      <td className="border-t px-2 py-2">{renderYesNo(survey.updates)}</td>
+                      <td className="border-t px-2 py-2 text-gray-800">{survey.usageDuration}</td>
+                      <td className="border-t px-2 py-2 text-gray-800">{survey.couponCode}</td>
+                      <td className="border-t px-2 py-2 text-gray-800 whitespace-nowrap">{formatDate(survey.submittedAt)}</td>
+                      <td className="border-t px-2 py-2 text-gray-800 whitespace-nowrap">{formatDate(survey.couponExpirationDate)}</td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="11" className="text-center py-10 text-gray-500">
+                      No survey data available.
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
         )}
 
         <div className="mt-6 text-sm text-gray-500 text-center">
           Total responses: {surveys.length}
         </div>
+        <div className="flex justify-end mb-4">
+          <button
+            onClick={() => handleLogout()}
+            className="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded"
+          >
+            Log Out
+          </button>
+        </div>
+
       </div>
     </div>
   );
