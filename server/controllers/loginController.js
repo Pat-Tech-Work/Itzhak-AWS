@@ -8,32 +8,33 @@ const loginService = require('../services/loginService');
 const jwtAuth = require('../middleware/jwtAuth');
 
 // התחברות
+// התחברות // 27/5/2025
 router.post('/', async (req, res) => {
   try {
     const { email, password } = req.body;
-    
+
     if (!email?.trim() || !password?.trim()) {
       return res.status(400).json({ error: 'Missing email or password' });
     }
-
+    
     const { token, user } = await loginService.login(email, password);
 
-    // שמירת הטוקן ב-cookie
+    // הגדרות cookie מתאימות לפריסה בפרודקשן
     res.cookie('token', token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax',
-      maxAge: 3600000 // 1 hour
+      secure: true, // תמיד true בפרודקשן
+      sameSite: 'None', // חשוב לבקשות cross-origin
+      maxAge: 3600000, // 1 hour
+      domain: 'https://hevracom.shop/' // התאם לדומיין שלך
     });
 
-
-    return res.status(200).json({ 
-      message: 'Login successful', 
-      user: { 
-        id: user._id, 
-        email: user.email, 
-        name: user.name 
-      } 
+    return res.status(200).json({
+      message: 'Login successful',
+      user: {
+        id: user._id,
+        email: user.email,
+        name: user.name
+      }
     });
   } catch (error) {
     console.error('Login error:', error.message);
@@ -43,9 +44,9 @@ router.post('/', async (req, res) => {
 
 // אימות טוקן
 router.get('/verify-token', jwtAuth, (req, res) => {
-  res.json({ 
-    message: 'Token is valid', 
-    user: req.user 
+  res.json({
+    message: 'Token is valid',
+    user: req.user
   });
 });
 
