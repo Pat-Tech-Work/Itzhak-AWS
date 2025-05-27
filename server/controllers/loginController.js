@@ -20,7 +20,7 @@ router.post('/', async (req, res) => {
     const { token, user } = await loginService.login(email, password);
 
     // הגדרות cookie מתאימות לפריסה בפרודקשן
-    res.cookie('token', token, {
+    res.cookie('jwt', token, {
       httpOnly: true,
       secure: true, // תמיד true בפרודקשן
       sameSite: 'None', // חשוב לבקשות cross-origin
