@@ -25,7 +25,6 @@ router.post('/', async (req, res) => {
       secure: true, // תמיד true בפרודקשן
       sameSite: 'None', // חשוב לבקשות cross-origin
       maxAge: 3600000, // 1 hour
-      domain: 'https://hevracom.shop/' // התאם לדומיין שלך
     });
 
     return res.status(200).json({
