@@ -21,6 +21,8 @@ app.use(cors({
     'https://hevracom.shop'
   ],
   credentials: true, // Allows sending cookies
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // התחברות // 27/5/2025
+  allowedHeaders: ['Content-Type', 'Authorization'] // התחברות // 27/5/2025
 }));
 
 app.use(express.json());
