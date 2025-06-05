@@ -4,16 +4,32 @@ const router = express.Router();
 const surveyService = require('../services/surveyService');
 const orderNumberService = require('../services/orderNumberService');
 const couponCodeService = require('../services/couponCodeService');
+const jwtAuth = require('../middleware/jwtAuth');
 
-// GET http://localhost:4000/api/survey
-// קבלת כל הסקרים
-router.get('/', async (req, res) => {
-    try {
-        const surveys = await surveyService.getAllSurveys();
-        res.json(surveys);
-    } catch (error) {
-        res.status(500).json({ error: error.message });
+// הוסף route ציבורי לבדיקה
+router.get('/test', (req, res) => {
+  res.json({ 
+    message: 'Survey API is working!',
+    timestamp: new Date().toISOString(),
+    endpoints: {
+      'GET /test': 'Test endpoint (public)',
+      'GET /': 'Get all surveys (protected)',
+      'POST /': 'Create new survey (public)',
+      'GET /check/:orderNumber': 'Check if survey exists (public)',
+      'GET /verify/:orderNumber/:phoneNumber': 'Verify survey with phone (public)'
     }
+  });
+});
+
+// מביא את כל הסקרים (מוגן!) 
+router.get('/', jwtAuth, async (req, res) => {
+  try {
+    const surveys = await surveyService.getAllSurveys();
+    res.json(surveys);
+  } catch (error) {
+    console.error('Error fetching surveys:', error);
+    res.status(500).json({ error: 'Failed to fetch surveys' });
+  }
 });
 
 // POST http://localhost:4000/api/survey
@@ -39,8 +55,8 @@ router.post('/', async (req, res) => {
             });
         }
 
-        const couponCode = await couponCodeService.assignCoupon(req.body.orderNumber);
-        if (!couponCode) {
+        const coupon = await couponCodeService.assignCoupon(req.body.orderNumber);
+        if (!coupon) {
             return res.status(409).json({ error: "An error occurred, please contact customer service and attach a screenshot (Coupon code error: 0505)" });
         }
 
@@ -49,12 +65,16 @@ router.post('/', async (req, res) => {
         // הכנת הנתונים
         const surveyData = {
             ...req.body,
-            couponCode,
+            couponCode: coupon.couponCode,
+            couponExpirationDate: coupon.couponExpirationDate,
             ipAddress: clientIP
         };
 
         const newSurvey = await surveyService.createSurvey(surveyData);
+        console.log("Assigned coupon:", coupon);
+
         res.status(201).json(newSurvey);
+
     } catch (error) {
         console.error("Error creating survey:", error);
         res.status(500).json({ error: "Server error" });
@@ -83,6 +103,52 @@ router.delete('/:id', async (req, res) => {
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
+});
+
+// GET Check if survey exists for order number
+router.get('/check/:orderNumber', async (req, res) => {
+  try {
+    const existingSurvey = await surveyService.getSurveyByOrderNumber(req.params.orderNumber);
+    if (existingSurvey) {
+      return res.json({ 
+        exists: true, 
+        couponCode: existingSurvey.couponCode,
+        couponExpirationDate: existingSurvey.couponExpirationDate 
+      });
+    }
+    res.json({ exists: false });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// GET Check if survey exists and phone matches
+router.get('/verify/:orderNumber/:phoneNumber', async (req, res) => {
+  try {
+    const { orderNumber, phoneNumber } = req.params;
+    const existingSurvey = await surveyService.getSurveyByOrderNumber(orderNumber);
+
+    if (existingSurvey) {
+      const fullPhone = existingSurvey.phoneNumber?.replace(/\D/g, "");
+      const inputPhone = phoneNumber.replace(/\D/g, "");
+
+      const isPhoneMatch = fullPhone === inputPhone;
+
+      if (isPhoneMatch) {
+        return res.json({
+          verified: true,
+          couponCode: existingSurvey.couponCode,
+          couponExpirationDate: existingSurvey.couponExpirationDate
+        });
+      } else {
+        return res.status(403).json({ verified: false, error: "Phone number does not match" });
+      }
+    }
+
+    res.status(404).json({ verified: false, error: "No survey found for this order number" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 });
 
 module.exports = router;

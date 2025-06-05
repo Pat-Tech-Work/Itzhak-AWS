@@ -1,23 +1,28 @@
 /* // עבור העלאה לענן
 
+// db.js
 const mongoose = require('mongoose');
-require('dotenv').config();
+const uri = process.env.MONGO_URI;
+
+const clientOptions = {
+  serverApi: { version: '1', strict: true, deprecationErrors: true }
+  // אין צורך ב-useNewUrlParser או useUnifiedTopology
+};
 
 const connectDB = async () => {
   try {
-    await mongoose.connect(process.env.MONGO_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
-    console.log('MongoDB connected successfully');
+    await mongoose.connect(uri, clientOptions);
+    console.log("MongoDB connected successfully.");
   } catch (error) {
-    console.error('MongoDB connection failed:', error);
-    process.exit(1); // Exit the process if the connection fails
+    console.error("MongoDB connection failed:", error.message);
+    process.exit(1);
   }
 };
 
 module.exports = connectDB;
+
 */
+
 
 // db.js
 const mongoose = require('mongoose'); // connection to Database

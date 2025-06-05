@@ -1,43 +1,31 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from "react-redux";
+import { fetchSurveysThunk } from "../redux/slices/surveySlice";
+import { logoutThunk } from "../redux/slices/authSlice";
 
 const satisfactionLevels = {
-  1: 'Very Dissatisfied',
-  2: 'Dissatisfied',
-  3: 'Neutral',
-  4: 'Satisfied',
-  5: 'Very Satisfied'
+  "1 - Very Satisfied": "Very Satisfied",
+  "2 - Satisfied": "Satisfied",
+  "3 - Neutral": "Neutral",
+  "4 - Dissatisfied": "Dissatisfied",
+  "5 - Very Dissatisfied": "Very Dissatisfied"
 };
 
 const Dashboard = () => {
-  const [surveys, setSurveys] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
+  const { surveys, isLoading, error } = useSelector((state) => state.survey);
+  const dispatch = useDispatch();
+  
   useEffect(() => {
-    const fetchSurveys = async () => {
-      try {
-        setLoading(true);
-        const response = await axios.get('http://localhost:4000/api/survey');
-        setSurveys(response.data);
-        setLoading(false);
-      } catch (error) {
-        console.error('Error fetching surveys:', error);
-        setError('Failed to load survey data');
-        setLoading(false);
-      }
-    };
-
-    fetchSurveys();
-  }, []);
+    dispatch(fetchSurveysThunk());
+  }, [dispatch]);
 
   const getSatisfactionColor = (level) => {
     const colors = {
-      1: 'bg-red-100 text-red-700',
-      2: 'bg-orange-100 text-orange-700',
-      3: 'bg-yellow-100 text-yellow-800',
-      4: 'bg-green-100 text-green-700',
-      5: 'bg-emerald-100 text-emerald-700',
+      "1 - Very Satisfied": 'bg-red-100 text-red-700',
+      "2 - Satisfied": 'bg-orange-100 text-orange-700',
+      "3 - Neutral": 'bg-yellow-100 text-yellow-800',
+      "4 - Dissatisfied": 'bg-green-100 text-green-700',
+      "5 - Very Dissatisfied": 'bg-emerald-100 text-emerald-700',
     };
     return colors[level] || 'bg-gray-100 text-gray-700';
   };
@@ -59,57 +47,79 @@ const Dashboard = () => {
     });
   };
 
+  const handleLogout = () => {
+    dispatch(logoutThunk());
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 p-6">
       <div className="bg-white shadow-lg rounded-xl p-6 w-full max-w-6xl mx-auto">
-        <h2 className="text-center text-2xl font-bold mb-6 text-gray-800">
-          📊 Customer Survey Results Dashboard
-        </h2>
+        <div className="flex justify-between items-center mb-6">
+          <h2 className="text-2xl font-bold text-gray-800">
+            📊 Customer Survey Results Dashboard
+          </h2>
+          <button
+            onClick={handleLogout}
+            className="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded transition-colors"
+          >
+            Log Out
+          </button>
+        </div>
 
-        {loading ? (
+        {isLoading ? (
           <div className="text-center py-10 text-gray-600">Loading survey data...</div>
         ) : error ? (
           <div className="text-center py-10 text-red-600">{error}</div>
         ) : (
           <div className="overflow-x-auto">
-            <table className="w-full border-collapse table-auto text-sm">
+            <table className="min-w-full table-auto border-collapse text-sm">
               <thead>
-                <tr className="bg-gray-100 text-left text-gray-700 font-semibold">
-                  <th className="px-4 py-3 rounded-tl-lg">#</th>
-                  <th className="px-4 py-3">Order Number</th>
-                  <th className="px-4 py-3">Email</th>
-                  <th className="px-4 py-3">Product</th>
-                  <th className="px-4 py-3">Marketplace</th>
-                  <th className="px-4 py-3">Satisfaction</th>
-                  <th className="px-4 py-3">Updates</th>
-                  <th className="px-4 py-3">Duration</th>
-                  <th className="px-4 py-3">Coupon Code</th>
-                  <th className="px-4 py-3 rounded-tr-lg">Submitted At</th>
+                <tr className="bg-gray-100 text-gray-700 font-semibold">
+                  <th className="px-2 py-3 text-left">#</th>
+                  <th className="px-2 py-3 text-left">Order</th>
+                  <th className="px-2 py-3 text-left">Email</th>
+                  <th className="px-2 py-3 text-left">Product</th>
+                  <th className="px-2 py-3 text-left">Marketplace</th>
+                  <th className="px-2 py-3 text-left">Satisfaction</th>
+                  <th className="px-2 py-3 text-left">Updates</th>
+                  <th className="px-2 py-3 text-left">Duration</th>
+                  <th className="px-2 py-3 text-left">Coupon</th>
+                  <th className="px-2 py-3 text-left">Submitted</th>
+                  <th className="px-2 py-3 text-left">Expiration</th>
                 </tr>
               </thead>
               <tbody>
                 {surveys.length > 0 ? (
                   surveys.map((survey, index) => (
                     <tr key={survey._id} className={index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
-                      <td className="border-t px-4 py-3 font-medium text-gray-800">{index + 1}</td>
-                      <td className="border-t px-4 py-3 text-gray-800">{survey.orderNumber}</td>
-                      <td className="border-t px-4 py-3 text-gray-800">{survey.email}</td>
-                      <td className="border-t px-4 py-3 text-gray-800">{survey.product}</td>
-                      <td className="border-t px-4 py-3 text-gray-800">{survey.marketplace}</td>
-                      <td className="border-t px-4 py-3">
+                      <td className="border-t px-2 py-2 text-gray-800">{index + 1}</td>
+                      <td className="border-t px-2 py-2 text-gray-800 whitespace-nowrap">{survey.orderNumber}</td>
+                      <td className="border-t px-2 py-2 text-gray-800 truncate max-w-[120px]" title={survey.email}>
+                        {survey.email}
+                      </td>
+                      <td className="border-t px-2 py-2 text-gray-800 truncate max-w-[100px]" title={survey.product}>
+                        {survey.product}
+                      </td>
+                      <td className="border-t px-2 py-2 text-gray-800">{survey.marketplace}</td>
+                      <td className="border-t px-2 py-2">
                         <span className={`px-2 py-1 rounded-full text-xs ${getSatisfactionColor(survey.satisfaction)}`}>
                           {satisfactionLevels[survey.satisfaction] || 'Not Provided'}
                         </span>
                       </td>
-                      <td className="border-t px-4 py-3">{renderYesNo(survey.updates)}</td>
-                      <td className="border-t px-4 py-3 text-gray-800">{survey.usageDuration}</td>
-                      <td className="border-t px-4 py-3 text-gray-800">{survey.couponCode}</td>
-                      <td className="border-t px-4 py-3 text-gray-800">{formatDate(survey.submittedAt)}</td>
+                      <td className="border-t px-2 py-2">{renderYesNo(survey.updates)}</td>
+                      <td className="border-t px-2 py-2 text-gray-800">{survey.usageDuration}</td>
+                      <td className="border-t px-2 py-2 text-gray-800">{survey.couponCode}</td>
+                      <td className="border-t px-2 py-2 text-gray-800 whitespace-nowrap">
+                        {formatDate(survey.submittedAt)}
+                      </td>
+                      <td className="border-t px-2 py-2 text-gray-800 whitespace-nowrap">
+                        {formatDate(survey.couponExpirationDate)}
+                      </td>
                     </tr>
                   ))
                 ) : (
                   <tr>
-                    <td colSpan="10" className="text-center py-10 text-gray-500">
+                    <td colSpan="11" className="text-center py-10 text-gray-500">
                       No survey data available.
                     </td>
                   </tr>

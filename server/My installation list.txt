@@ -8,10 +8,14 @@
 // $ node main.js --->  $ nodemon main.js
 // $ npm install multer csv-parser xlsx
 // $ npm install googleapis עבור קריאה של אקסל בענן
+// npm install jsonwebtoken
+// npm install bcrypt jsonwebtoken
+// npm i cookie-parser
+// npm install @reduxjs/toolkit react-redux
+
 עבור העלה לגיט אהב:
 // npm install
 // npm init -y
-
 
 Running the server:
 $ nodemon main.js
