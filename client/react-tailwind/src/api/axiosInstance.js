@@ -5,9 +5,15 @@ import axios from 'axios';
 // VITE_API_BASE_URL=https://itzhak-aws-vkmdh.ondigitalocean.app/itzhak-aws-server/api
 const baseURL = import.meta.env.VITE_API_BASE_URL;
 
-const axiosInstance = axios.create({
-  baseURL: baseURL,
-  withCredentials: true, // חשוב לאימות מבוסס cookies
+// הכנסי את הטוקן בכל בקשה
+axiosInstance.interceptors.request.use((config) => {
+  const token = localStorage.getItem('token');
+  if (token) {
+    config.headers['Authorization'] = `Bearer ${token}`;
+  }
+  return config;
+}, (error) => {
+  return Promise.reject(error);
 });
 
 export default axiosInstance;
