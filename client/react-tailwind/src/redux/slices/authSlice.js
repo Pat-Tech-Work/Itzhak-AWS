@@ -8,6 +8,14 @@ export const loginDashboardThunk = createAsyncThunk(
   async ({ email, password }, { rejectWithValue }) => {
     try {
       const response = await axiosInstance.post('/login', { email, password });
+
+      // נשמור את הטוקן אם קיים (לדוגמה ב-headers או response.data.token)
+      const token = response.data?.token; // אם זה תמיד מגיע כאן, שים רק את זה
+      if (token) {
+        localStorage.setItem('token', token);
+        axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      }
+
       return response.data;
     } catch (error) {
       const errorMessage = error.response?.data?.error || 'Login error. Please check your details.';
@@ -15,6 +23,7 @@ export const loginDashboardThunk = createAsyncThunk(
     }
   }
 );
+
 
 // Thunk לאימות טוקן
 export const verifyTokenThunk = createAsyncThunk(
@@ -77,7 +86,12 @@ const authSlice = createSlice({
         state.isAuthenticated = true;
         state.user = action.payload.user || action.payload;
         state.error = null;
+
+        if (action.payload.token) {
+          localStorage.setItem('token', action.payload.token);
+        }
       })
+
       .addCase(loginDashboardThunk.rejected, (state, action) => {
         state.isLoading = false;
         state.isAuthenticated = false;
