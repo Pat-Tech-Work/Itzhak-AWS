@@ -177,8 +177,7 @@ function Step_2() {
                   value={formData.phoneNumber}
                   onChange={handleChange}
                   placeholder="Enter phone number e.g. 234-456-7890"
-
-                  className="flex-1 px-3 py-1.5 rounded-md border border-gray-200 bg-gray-50 text-sm"
+                  className="flex-1 px-2 sm:px-3 py-2 rounded-md border border-gray-200 bg-gray-50 text-xs sm:text-sm" 
                 />
               </div>
             </div>
