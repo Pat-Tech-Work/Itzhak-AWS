@@ -15,7 +15,7 @@ router.post('/', async (req, res) => {
   const { email, password } = req.body;
   try {
     const token = await loginService.login(email, password);
-    res.cookie("token", token, {
+    res.cookie("token", token, { // חובה בשביל העוגיות לאחר העלאה לענן
       httpOnly: true,
       secure: true,       // כי זה HTTPS
       sameSite: "None",   // כי הדומיינים שונים
