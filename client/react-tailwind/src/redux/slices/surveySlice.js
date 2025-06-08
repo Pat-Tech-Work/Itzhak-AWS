@@ -64,7 +64,6 @@ export const verifyPhoneNumberThunk = createAsyncThunk(
     }
   }
 );
-
 // Thunk לבדוק אם מספר הזמנה קיים
 export const checkOrderNumberThunk = createAsyncThunk(
   'survey/checkOrderNumber',
