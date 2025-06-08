@@ -7,7 +7,7 @@ const jwt = require("jsonwebtoken");
 // GET route - חייב להיות ראשון!
 router.get('/', (req, res) => {
   res.json({
-    message: 'Login API is working!',  
+    message: 'Login API is working!',
   });
 });
 
@@ -15,7 +15,12 @@ router.post('/', async (req, res) => {
   const { email, password } = req.body;
   try {
     const token = await loginService.login(email, password);
-    res.cookie("token", token, { httpOnly: true });
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: true,       // כי זה HTTPS
+      sameSite: "None",   // כי הדומיינים שונים
+      maxAge: 24 * 60 * 60 * 1000,
+    });
     res.send("Login successful");
   } catch (err) {
     res.status(401).send("Invalid credentials");
