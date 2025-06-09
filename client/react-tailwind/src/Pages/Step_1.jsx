@@ -74,10 +74,12 @@ function Step_1() {
         }
         const fullPhone = formData.countryCode + formData.phoneNumber;
         await dispatch(verifyPhoneNumberThunk({ orderNumber: formData.orderNumber, fullPhone })).unwrap();
-      } else {
-        localStorage.setItem("orderNumber", formData.orderNumber);
-        navigate("/step_2", { state: { orderNumber: formData.orderNumber } });
-      }
+} else {
+    // שמירה של כל המידע שיש עד כה (מספר הזמנה) תחת מפתח אחיד
+    const surveyData = { orderNumber: formData.orderNumber };
+    localStorage.setItem("surveyData", JSON.stringify(surveyData));
+    navigate("/step_2", { state: surveyData });
+}
     } catch (error) {
       console.error("Error sending process at Step_1:", error);
     }
