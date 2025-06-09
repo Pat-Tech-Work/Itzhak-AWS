@@ -88,8 +88,8 @@ function Step_1() {
   const phonePromptMessageUI = showPhoneInputUI && !formData.phoneNumber
     ? "This order already has a survey. Please enter your phone number to retrieve your coupon."
     : (phoneNumberVerificationStatus.checked && phoneNumberVerificationStatus.status && phoneNumberVerificationStatus.status !== 200 && !phoneNumberVerificationStatus.data?.verified)
-    ? (phoneNumberVerificationStatus.error || "Phone number does not match the one used in the survey.")
-    : "";
+      ? (phoneNumberVerificationStatus.error || "Phone number does not match the one used in the survey.")
+      : "";
 
   const couponDetailsUI = (phoneNumberVerificationStatus.checked && phoneNumberVerificationStatus.status === 200 && phoneNumberVerificationStatus.data?.verified)
     ? phoneNumberVerificationStatus.data
@@ -98,52 +98,56 @@ function Step_1() {
   const displayError = orderNumberCheckStatus.error || surveyExistsStatus.error || phoneNumberVerificationStatus.error || surveyApiError;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 flex items-center justify-center p-3 sm:p-4">
-      <div className="w-full max-w-md sm:max-w-lg md:max-w-2xl bg-white rounded-xl sm:rounded-2xl shadow-xl border border-gray-200 p-4 sm:p-6 md:p-8">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 flex items-center justify-center p-2">
+      <div className="w-full max-w-xs xs:max-w-sm sm:max-w-md md:max-w-lg lg:max-w-2xl bg-white rounded-lg sm:rounded-xl shadow-xl border border-gray-200 p-3 sm:p-4 md:p-6 lg:p-8">
         {/* Logo */}
-        <div className="text-center mb-4 sm:mb-6">
-<img src="/HevraCom-logo.png" alt="Logo" className="mx-auto h-12 sm:h-16 md:h-20 mb-3 sm:mb-4 max-w-full" />
+        <div className="text-center mb-2 sm:mb-4">
+          <img
+            src="/HevraCom-logo.png"
+            alt="Logo"
+            className="mx-auto h-8 sm:h-12 md:h-16 mb-2 sm:mb-3 max-w-full object-contain"
+          />
         </div>
 
         {/* Header */}
-        <div className="text-center mb-4 sm:mb-6">
-          <div className="text-blue-600 text-base sm:text-lg md:text-xl font-semibold mb-1 sm:mb-2">🎁 Free Amazon Gift Card</div>
-          <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-gray-800 mb-1 sm:mb-2">Enter Your Order Number</h1>
-          <p className="text-gray-600 text-sm sm:text-base">Complete the form to get your free coupon gift!</p>
-          <div className="mt-2 sm:mt-4 flex justify-center">
+        <div className="text-center mb-3 sm:mb-4">
+          <div className="text-blue-600 text-sm sm:text-lg font-semibold mb-1">🎁 Free Amazon Gift Card</div>
+          <h1 className="text-base sm:text-xl md:text-2xl font-bold text-gray-800 mb-1 leading-tight">Enter Your Order Number</h1>
+          <p className="text-gray-600 text-xs sm:text-sm leading-relaxed">Complete the form to get your free coupon gift!</p>
+          <div className="mt-2 sm:mt-3 flex justify-center">
             <div className="inline-flex items-center px-2 sm:px-3 py-1 rounded-full bg-indigo-100 text-indigo-800">
               <span className="text-xs sm:text-sm font-medium">Step 1 of 4</span>
             </div>
           </div>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-3">
           {/* Order Number Input */}
           <div className="relative">
-            <label className="block text-gray-700 font-medium mb-1 sm:mb-2 flex items-center text-sm sm:text-base">
+            <label className="block text-gray-700 font-medium mb-1 flex items-center text-sm">
               Order Number <span className="text-indigo-500 ml-1">*</span>
-              <span 
-                className="ml-1 sm:ml-2 text-indigo-600 font-bold text-base sm:text-lg cursor-pointer relative" 
-                onMouseEnter={() => setShowTooltip(true)} 
+              <span
+                className="ml-2 text-indigo-600 font-bold text-base cursor-pointer relative"
+                onMouseEnter={() => setShowTooltip(true)}
                 onMouseLeave={() => setShowTooltip(false)}
               >
                 !
                 {showTooltip && (
-                  <div className="absolute bottom-full mb-2 left-1/2 transform -translate-x-1/2 bg-gray-700 text-white text-xs rounded p-2 w-48 sm:w-64 shadow-lg z-10">
+                  <div className="absolute bottom-full mb-2 left-1/2 transform -translate-x-1/2 bg-gray-700 text-white text-xs rounded p-2 w-64 shadow-lg z-10">
                     Your Amazon Order Number can be found in your account under 'Your Orders.' It typically looks like 123-4567890-1234567.
                   </div>
                 )}
               </span>
             </label>
-            <input 
-              type="text" 
-              name="orderNumber" 
-              value={formData.orderNumber} 
-              onChange={handleChange} 
-              required 
-              disabled={isLoading} 
-              placeholder="e.g. 123-4567890-1234567" 
-              className="w-full px-3 sm:px-4 py-2 sm:py-3 rounded-md border border-gray-300 bg-gray-50 text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-400 text-sm sm:text-base" 
+            <input
+              type="text"
+              name="orderNumber"
+              value={formData.orderNumber}
+              onChange={handleChange}
+              required
+              disabled={isLoading}
+              placeholder="e.g. 123-4567890-1234567"
+              className="w-full px-3 py-2 rounded-md border border-gray-300 bg-gray-50 text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-400 text-base"
             />
           </div>
 
@@ -154,27 +158,28 @@ function Step_1() {
                 Your Phone Number <span className="text-indigo-500">*</span>
               </label>
               <div className="flex gap-2">
-                <select 
-                  name="countryCode" 
-                  value={formData.countryCode} 
-                  onChange={handleChange} 
-                  disabled={isLoading} 
-                  className="px-2 py-2 rounded-md border border-gray-200 bg-gray-50 text-xs sm:text-sm flex-shrink-0 w-20 sm:w-auto"
+                <select
+                  name="countryCode"
+                  value={formData.countryCode}
+                  onChange={handleChange}
+                  disabled={isLoading}
+                  className="px-2 py-2 rounded-md border border-gray-200 bg-gray-50 text-base flex-shrink-0 w-20"
+
                 >
                   {countryCodes.map(c => (
-                    <option key={c.code} value={c.code} className="text-xs sm:text-sm">
+                    <option key={c.code} value={c.code} className="text-sm">
                       {c.code}
                     </option>
                   ))}
                 </select>
-                <input 
-                  type="text" 
-                  name="phoneNumber" 
-                  value={formData.phoneNumber} 
-                  onChange={handleChange} 
-                  disabled={isLoading} 
-                  placeholder="Enter phone number" 
-                  className="flex-1 px-2 sm:px-3 py-2 rounded-md border border-gray-200 bg-gray-50 text-xs sm:text-sm" 
+                <input
+                  type="text"
+                  name="phoneNumber"
+                  value={formData.phoneNumber}
+                  onChange={handleChange}
+                  disabled={isLoading}
+                  placeholder="Enter phone number"
+                  className="flex-1 px-3 py-2 rounded-md border border-gray-200 bg-gray-50 text-base min-w-0"
                 />
               </div>
             </div>
@@ -182,33 +187,35 @@ function Step_1() {
 
           {/* Error Messages */}
           {displayError && !couponDetailsUI && (
-            <div className="bg-red-100 text-red-700 px-3 sm:px-4 py-2 rounded-md text-xs sm:text-sm border border-red-300">
+            <div className="bg-red-100 text-red-700 px-3 py-2 rounded-md text-sm border border-red-300">
               {typeof displayError === 'string' ? displayError : 'An unexpected error occurred. Please try again.'}
             </div>
           )}
 
           {/* Phone Prompt Message */}
           {phonePromptMessageUI && !couponDetailsUI && !displayError && (
-            <div className="bg-yellow-100 text-yellow-800 px-3 sm:px-4 py-2 rounded-md text-xs sm:text-sm border border-yellow-300">
+            <div className="bg-yellow-100 text-yellow-800 px-3 py-2 rounded-md text-sm border border-yellow-300">
               {phonePromptMessageUI}
             </div>
           )}
 
           {/* Coupon Details */}
           {couponDetailsUI && (
-            <div className="bg-green-50 border border-green-300 text-green-800 px-3 sm:px-6 py-3 sm:py-4 rounded-md shadow-sm">
-              <div className="flex items-start space-x-2 sm:space-x-3">
-                <div className="text-lg sm:text-2xl">🎉</div>
+            <div className="bg-green-50 border border-green-300 text-green-800 px-3 py-3 rounded-md shadow-sm">
+              <div className="flex items-start space-x-2">
+                <div className="text-lg flex-shrink-0">🎉</div>
                 <div className="flex-1 min-w-0">
-                  <p className="font-semibold text-sm sm:text-base mb-1">The survey has already been filled out for this order.</p>
-                  <p className="text-xs sm:text-sm break-words">
-                    <span className="font-semibold">Your coupon code:</span> 
-                    <span className="text-green-700 bg-white px-1 sm:px-2 py-0.5 rounded-md border border-green-400 font-mono text-xs sm:text-sm tracking-wide shadow-sm ml-1 inline-block">
-                      {couponDetailsUI.couponCode}
-                    </span>
-                  </p>
-                  <p className="text-xs sm:text-sm mt-1">
-                    <span className="font-semibold">The coupon is valid until:</span> 
+                  <p className="font-semibold text-sm mb-1">The survey has already been filled out for this order.</p>
+                  <div className="text-sm break-words">
+                    <span className="font-semibold">Your coupon code:</span>
+                    <div className="mt-1">
+                      <span className="text-green-700 bg-white px-2 py-1 rounded-md border border-green-400 font-mono text-sm tracking-wide shadow-sm inline-block break-all">
+                        {couponDetailsUI.couponCode}
+                      </span>
+                    </div>
+                  </div>
+                  <p className="text-sm mt-1">
+                    <span className="font-semibold">The coupon is valid until:</span>
                     <span className="underline ml-1">{formatDate(couponDetailsUI.couponExpirationDate)}</span>
                   </p>
                 </div>
@@ -220,13 +227,12 @@ function Step_1() {
           <button
             type="submit"
             disabled={isLoading || !formData.orderNumber || (showPhoneInputUI && !formData.phoneNumber && !couponDetailsUI)}
-            className={`w-full py-2 sm:py-3 rounded-md text-white text-base sm:text-lg font-semibold transition duration-300 ${
-              (isLoading || !formData.orderNumber || (showPhoneInputUI && !formData.phoneNumber && !couponDetailsUI))
+            className={`w-full py-3 rounded-md text-white text-base font-semibold transition duration-300 ${(isLoading || !formData.orderNumber || (showPhoneInputUI && !formData.phoneNumber && !couponDetailsUI))
                 ? "bg-gray-300 cursor-not-allowed"
                 : "bg-indigo-500 hover:bg-indigo-600"
-            }`}
+              }`}
           >
-            {isLoading ? "טוען..." : "Next"}
+            {isLoading ? "Loading..." : "Next"}
           </button>
         </form>
       </div>
