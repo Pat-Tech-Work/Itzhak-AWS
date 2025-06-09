@@ -8,6 +8,7 @@ function Step_4() {
     const navigate = useNavigate();
     const location = useLocation();
 const dispatch = useDispatch();
+    console.log('STEP 4 DATA -> Received:', location.state);
 
     const previousData = location.state || JSON.parse(localStorage.getItem("surveyData")) || {};
 
@@ -49,6 +50,7 @@ const dispatch = useDispatch();
 
  const handleSubmit = async (e) => {
     e.preventDefault();
+        console.log('STEP 4 DATA -> Checking this object:', formData);
 
     if (!formData.review) {
         alert("Lack of field of criticism");
