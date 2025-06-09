@@ -1,10 +1,11 @@
+/* App.css*/
+
 /* סידור בסיסי לגוף הדף */
 body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
   font-family: Arial, sans-serif;
-  overflow-x: hidden;
 }
 
 /* קונטיינר של התמונה עם יחס גובה־רוחב תקין */
@@ -89,8 +90,12 @@ button:hover {
     padding: 1rem;
   }
 
+  /* * עדכון: הגדר את גודל הפונט ל-1rem (16px) כדי למנוע זום באייפון.
+   * הניהול העיקרי של גודל הפונט נעשה כעת עם Tailwind בקומפוננטה.
+   * כלל זה מבטיח שגם אם שכחנו קלאס, הפונט לא יהיה קטן מדי.
+  */
   input,
   button {
-    font-size: 0.95rem;
+    font-size: 1rem;
   }
 }
