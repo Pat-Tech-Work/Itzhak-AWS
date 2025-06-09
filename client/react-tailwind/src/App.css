@@ -1,21 +1,94 @@
+/* סידור בסיסי לגוף הדף */
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+  overflow-x: hidden;
+}
+
+/* עיצוב הקונטיינר של התמונה */
 .image-container {
-  width: 100vw;
+  width: 100%;
+  max-width: 100vw;
   height: 80vh;
   position: relative;
   overflow: hidden;
 }
 
+/* תמונת רקע */
 .bg-image {
   width: 100%;
   height: 100%;
   background-image: url('/bg.jpg');
   background-size: cover;
   background-position: center;
-  object-fit: none; /* לא צריך כיוון שהתמונה כבר מוגדרת כרקע */
 }
 
+/* עיצוב כללי לטופס */
+.form-box {
+  width: 90%;
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 1.5rem;
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* שדות טופס */
+input[type="text"],
+input[type="tel"] {
+  width: 100%;
+  padding: 0.75rem;
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+}
+
+/* כפתור */
+button {
+  width: 100%;
+  padding: 0.75rem;
+  background-color: #6366f1; /* צבע סגול בהיר */
+  color: white;
+  font-weight: bold;
+  font-size: 1rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #4f46e5;
+}
+
+/* הודעת הצלחה */
+.success-message {
+  background-color: #e6ffed;
+  color: #047857;
+  border: 1px solid #a7f3d0;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  font-size: 0.95rem;
+}
+
+/* רספונסיביות */
 @media (max-width: 768px) {
   .image-container {
-    height: 50vh; /* בשימוש בסמארטפונים או מסכים קטנים */
+    height: 50vh;
+  }
+
+  .form-box {
+    padding: 1rem;
+  }
+
+  input,
+  button {
+    font-size: 0.95rem;
   }
 }
