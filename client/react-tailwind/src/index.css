@@ -1,3 +1,28 @@
+/* src/index.css */
+
+/* 1. ייבוא בסיסי של Tailwind */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* 2. הגדרות בסיס גלובליות */
+@layer base {
+  html {
+    /* מבטיח ש-padding ו-border נכללים בחישוב הגודל של כל האלמנטים */
+    box-sizing: border-box;
+  }
+  
+  /* כל האלמנטים יורשים את ההגדרה מ-html */
+  *, *::before, *::after {
+    box-sizing: inherit;
+  }
+
+  body {
+    /* מונע גלילה מיותרת ומגדיר פונט ברירת מחדל */
+    margin: 0;
+    padding: 0;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
