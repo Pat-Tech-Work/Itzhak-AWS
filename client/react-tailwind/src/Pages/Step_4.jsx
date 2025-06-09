@@ -7,8 +7,7 @@ import amazonProductLinks from '../Services/productLinks';
 function Step_4() {
     const navigate = useNavigate();
     const location = useLocation();
-const dispatch = useDispatch();
-    console.log('STEP 4 DATA -> Received:', location.state);
+    const dispatch = useDispatch();
 
     const previousData = location.state || JSON.parse(localStorage.getItem("surveyData")) || {};
 
@@ -48,39 +47,39 @@ const dispatch = useDispatch();
             });
     };
 
- const handleSubmit = async (e) => {
-    e.preventDefault();
+    const handleSubmit = async (e) => {
+        e.preventDefault();
         console.log('STEP 4 DATA -> Checking this object:', formData);
 
-    if (!formData.review) {
-        alert("Lack of field of criticism");
-        return;
-    }
-
-    if (!formData.orderNumber || !formData.email || !formData.satisfied || !formData.name) {
-        alert("Important data missing");
-        return;
-    }
-
-    try {
-        const resultAction = await dispatch(createSurveyThunk(formData));
-        const response = resultAction.payload;
-
-        if (response?.couponCode) {
-            localStorage.removeItem("surveyData");
-            navigate("/success", {
-                state: {
-                    couponCode: response.couponCode,
-                    couponExpirationDate: response.couponExpirationDate
-                }
-            });
-        } else {
-            alert("Survey sent, but no coupon code received.");
+        if (!formData.review) {
+            alert("Lack of field of criticism");
+            return;
         }
-    } catch (error) {
-        alert("Error sending survey: " + error.message);
-    }
-};
+
+        if (!formData.orderNumber || !formData.email || !formData.satisfied || !formData.name) {
+            alert("Important data missing");
+            return;
+        }
+
+        try {
+            const resultAction = await dispatch(createSurveyThunk(formData));
+            const response = resultAction.payload;
+
+            if (response?.couponCode) {
+                localStorage.removeItem("surveyData");
+                navigate("/success", {
+                    state: {
+                        couponCode: response.couponCode,
+                        couponExpirationDate: response.couponExpirationDate
+                    }
+                });
+            } else {
+                alert("Survey sent, but no coupon code received.");
+            }
+        } catch (error) {
+            alert("Error sending survey: " + error.message);
+        }
+    };
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50">
