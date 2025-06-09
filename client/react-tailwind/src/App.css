@@ -9,20 +9,20 @@ body {
 
 /* עיצוב הקונטיינר של התמונה */
 .image-container {
-  width: 100%;
-  max-width: 100vw;
-  height: 80vh;
+  width: 100%; /* avoid 100vw to prevent Safari width bugs */
+  height: 80dvh; /* dynamic viewport height, better on iOS Safari */
   position: relative;
   overflow: hidden;
 }
-
 /* תמונת רקע */
+/* Background image using CSS background */
 .bg-image {
   width: 100%;
   height: 100%;
   background-image: url('/bg.jpg');
   background-size: cover;
   background-position: center;
+  background-repeat: no-repeat;
 }
 
 /* עיצוב כללי לטופס */
@@ -80,8 +80,9 @@ button:hover {
 /* רספונסיביות */
 @media (max-width: 768px) {
   .image-container {
-    height: 50vh;
+    height: 50dvh; /* better responsiveness for mobile */
   }
+
 
   .form-box {
     padding: 1rem;
