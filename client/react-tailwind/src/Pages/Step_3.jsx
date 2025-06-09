@@ -4,9 +4,9 @@ import { useNavigate, useLocation } from "react-router-dom";
 function Step_3() {
     const location = useLocation();
     const navigate = useNavigate();
-
     // קריאת המידע מהשלב הקודם או מ-localStorage. לוגיקה זו כבר הייתה תקינה.
     const previousData = location.state || JSON.parse(localStorage.getItem("surveyData")) || {};
+
     const [formData, setFormData] = useState({
         // חשוב: קודם כל פורסים את המידע הקיים כדי לשמר אותו
         ...previousData,
