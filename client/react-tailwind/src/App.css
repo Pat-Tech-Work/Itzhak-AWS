@@ -7,16 +7,18 @@ body {
   overflow-x: hidden;
 }
 
-/* עיצוב הקונטיינר של התמונה */
+/* קונטיינר של התמונה עם יחס גובה־רוחב תקין */
 .image-container {
-  width: 100%; /* avoid 100vw to prevent Safari width bugs */
-  height: 80dvh; /* dynamic viewport height, better on iOS Safari */
+  width: 100%;
+  aspect-ratio: 4 / 3; /* מתאים לאייפדים */
   position: relative;
   overflow: hidden;
 }
-/* תמונת רקע */
-/* Background image using CSS background */
+
+/* רקע - תמונה מותאמת */
 .bg-image {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   background-image: url('/bg.jpg');
@@ -25,11 +27,11 @@ body {
   background-repeat: no-repeat;
 }
 
-/* עיצוב כללי לטופס */
+/* טופס */
 .form-box {
   width: 90%;
   max-width: 500px;
-  margin: 0 auto;
+  margin: 1rem auto;
   padding: 1.5rem;
   background-color: white;
   border-radius: 12px;
@@ -52,7 +54,7 @@ input[type="tel"] {
 button {
   width: 100%;
   padding: 0.75rem;
-  background-color: #6366f1; /* צבע סגול בהיר */
+  background-color: #6366f1;
   color: white;
   font-weight: bold;
   font-size: 1rem;
@@ -80,9 +82,8 @@ button:hover {
 /* רספונסיביות */
 @media (max-width: 768px) {
   .image-container {
-    height: 50dvh; /* better responsiveness for mobile */
+    aspect-ratio: 16 / 9; /* מותאם לאייפונים ומסכים צרים */
   }
-
 
   .form-box {
     padding: 1rem;
