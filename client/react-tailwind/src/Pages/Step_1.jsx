@@ -102,7 +102,7 @@ function Step_1() {
       <div className="w-full max-w-md sm:max-w-lg md:max-w-2xl bg-white rounded-xl sm:rounded-2xl shadow-xl border border-gray-200 p-4 sm:p-6 md:p-8">
         {/* Logo */}
         <div className="text-center mb-4 sm:mb-6">
-          <img src="/HevraCom-logo.png" alt="Logo" className="mx-auto h-12 sm:h-16 md:h-20 mb-3 sm:mb-4" />
+<img src="/HevraCom-logo.png" alt="Logo" className="mx-auto h-12 sm:h-16 md:h-20 mb-3 sm:mb-4 max-w-full" />
         </div>
 
         {/* Header */}
