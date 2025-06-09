@@ -53,6 +53,8 @@ function Step_2() {
     e.preventDefault();
     // המידע כבר מעודכן ב-formData בזכות ה-state.
     // פשוט מנווטים לשלב הבא עם כל האובייקט המלא.
+   console.log('STEP 2 DATA -> to Step 3:', formData);
+
     navigate("/step_3", { state: formData });
   };
 
