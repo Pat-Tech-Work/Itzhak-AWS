@@ -10,7 +10,7 @@ function Step_3() {
     const [formData, setFormData] = useState({
         // חשוב: קודם כל פורסים את המידע הקיים כדי לשמר אותו
         ...previousData,
-        
+
         // לאחר מכן, מגדירים ערכי ברירת מחדל רק לשדות החדשים של שלב זה,
         // או דורסים ערכים קיימים אם זו הכוונה.
         // לדוגמה, אם רוצים שהמשתמש יבחר מחדש את שביעות הרצון מהרשימה המפורטת.
@@ -37,15 +37,25 @@ function Step_3() {
         e.preventDefault();
         navigate("/step_4", { state: formData });
     };
+    const isFormValid =
+        formData.product &&
+        formData.marketplace &&
+        formData.satisfaction &&
+        formData.usageDuration;
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 py-6 px-4 sm:py-12">
-            <div className="bg-white shadow-md rounded-lg p-6 w-full max-w-md mx-auto">
-                <img 
-                  src="/HevraCom-logo.png"
-                  alt="Company Logo"
-                  className="mx-auto h-20 w-auto"
-                />
+     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 py-6 px-4 sm:py-12">
+      <div className="w-full max-w-md mx-auto bg-white rounded-2xl shadow-xl border border-gray-200 p-6 sm:p-8">
+        <div className="text-center mb-6">
+          <img
+            src="/HevraCom-logo.png"
+            alt="Logo"
+            className="mx-auto h-12 sm:h-16 max-w-full object-contain"
+          />
+                </div>
+
+                <div className="text-center mb-4">  </div>
+
                 <h2 className="text-lg font-semibold text-center mb-4">🎁 Free Amazon Gift Card</h2>
                 <p className="text-sm text-gray-600 text-center mb-6">Complete the form to get your free gift!</p>
                 <div className="mt-4 flex justify-center">
@@ -53,7 +63,8 @@ function Step_3() {
                         <span className="text-sm font-medium">Step 3 of 4</span>
                     </div>
                 </div>
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={handleSubmit} noValidate>
+
                     {/* --- כל ה-JSX של הטופס שלך מגיע כאן ללא שינוי --- */}
                     {/* Product Selection */}
                     <div className="mb-4">
@@ -107,7 +118,15 @@ function Step_3() {
                     {/* Buttons */}
                     <div className="flex justify-between mt-6">
                         <button type="button" onClick={() => navigate("/step_2", { state: formData })} className="px-4 py-2 text-gray-600 rounded-md hover:bg-gray-100">Back</button>
-                        <button type="submit" className={`px-4 py-2 bg-black text-white rounded-md hover:bg-gray-800`}>Next</button>
+                        <button
+                            type="submit"
+                            className={`flex-grow py-1.5 rounded text-white text-sm ${isFormValid ? "bg-indigo-500 hover:bg-indigo-600 transition" : "bg-gray-300 cursor-not-allowed"
+                                }`}
+                            disabled={!isFormValid}
+                        >
+                            Next
+                        </button>
+
                     </div>
                 </form>
             </div>
