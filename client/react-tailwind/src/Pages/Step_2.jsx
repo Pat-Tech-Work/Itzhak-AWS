@@ -59,117 +59,174 @@ function Step_2() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 py-6 px-4 sm:py-12">
-      <div className="flex-1 flex items-center justify-center px-2 sm:px-4 py-2">
-        <div className="w-full max-w-md sm:max-w-lg lg:max-w-xl bg-white rounded-lg shadow border border-gray-100 px-4 sm:px-6 py-3">
-          <div className="text-center mb-2">
-            <img src="/HevraCom-logo.png" alt="Logo" className="mx-auto h-10 sm:h-12 w-auto mb-1" />
-            <h1 className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-800">Your Feedback</h1>
-            <p className="text-xs sm:text-sm text-gray-500">We'd love to hear your thoughts on our product</p>
-            <div className="mt-1 flex justify-center">
-              <div className="inline-flex items-center px-2 py-0.5 rounded-full bg-indigo-100 text-indigo-800">
-                <span className="text-xs font-medium">Step 2 of 4</span>
-              </div>
+      <div className="w-full max-w-md mx-auto bg-white rounded-2xl shadow-xl border border-gray-200 p-6 sm:p-8">
+        <div className="text-center mb-6">
+          <img
+            src="/HevraCom-logo.png"
+            alt="Logo"
+            className="mx-auto h-12 sm:h-16 max-w-full object-contain"
+          />
+        </div>
+        <div className="text-center mb-4">
+
+          <h1 className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-800">Your Feedback</h1>
+          <p className="text-xs sm:text-sm text-gray-500">We'd love to hear your thoughts on our product</p>
+        </div>
+
+        <div className="mt-1 flex justify-center">
+          <div className="inline-flex items-center px-2 py-0.5 rounded-full bg-indigo-100 text-indigo-800">
+            <span className="text-xs font-medium">Step 2 of 4</span>
+          </div>
+        </div>
+
+        {/* הטופס מתחיל כאן */}
+        <form onSubmit={handleSubmit} className="space-y-2 mt-4">
+          {/* Full Name */}
+          <div>
+            <label className="block text-gray-700 font-medium text-sm mb-0.5">
+              Your Full Name <span className="text-indigo-500">*</span>
+            </label>
+            <input
+              type="text"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+              placeholder="Enter your full name"
+              required
+              className="w-full px-3 py-1.5 rounded-md border border-gray-200 bg-gray-50 text-sm"
+            />
+          </div>
+
+          {/* Order Number */}
+          <div className="relative">
+            <label className="block text-gray-700 font-medium text-sm mb-0.5">
+              Your Order Number <span className="text-indigo-500">*</span>
+            </label>
+            <input
+              type="text"
+              name="orderNumber"
+              value={formData.orderNumber}
+              onChange={handleChange}
+              placeholder="Enter your order number"
+              required
+              readOnly
+              className="w-full px-3 py-1.5 rounded-md border border-gray-200 bg-gray-50 text-gray-700 text-sm"
+            />
+          </div>
+
+          {/* Email */}
+          <div>
+            <label className="block text-gray-700 font-medium text-sm mb-0.5">
+              Your Email Address <span className="text-indigo-500">*</span>
+            </label>
+            <input
+              type="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              placeholder="Enter your email address"
+              required
+              className="w-full px-3 py-1.5 rounded-md border border-gray-200 bg-gray-50 text-sm"
+            />
+          </div>
+
+          {/* Phone Number */}
+          <div>
+            <label className="block text-gray-700 font-medium text-sm mb-0.5">Your Phone Number</label>
+            <div className="flex gap-2">
+              <select
+                name="countryCode"
+                value={formData.countryCode}
+                onChange={handleChange}
+                className="px-2 py-1.5 rounded-md border border-gray-200 bg-gray-50 text-sm"
+              >
+                {countryCodes.map((country) => (
+                  <option key={country.code} value={country.code}>
+                    {country.code} {country.country}
+                  </option>
+                ))}
+              </select>
+              <input
+                type="text"
+                name="phoneNumber"
+                value={formData.phoneNumber}
+                onChange={handleChange}
+                placeholder="Enter phone number"
+                className="flex-1 px-2 sm:px-3 py-2 rounded-md border border-gray-200 bg-gray-50 text-xs sm:text-sm"
+              />
             </div>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-2">
-            {/* --- כאן מגיע כל ה-JSX של הטופס שלך ללא שינוי --- */}
-            {/* Full Name */}
-            <div>
-              <label className="block text-gray-700 font-medium text-sm mb-0.5">Your Full Name <span className="text-indigo-500">*</span></label>
-              <input
-                type="text"
-                name="name"
-                value={formData.name}
-                onChange={handleChange}
-                placeholder="Enter your full name"
-                required
-                className="w-full px-3 py-1.5 rounded-md border border-gray-200 bg-gray-50 text-sm"
-              />
-            </div>
+          {/* Updates Checkbox */}
+          <div className="flex items-center">
+            <input
+              type="checkbox"
+              name="updates"
+              checked={formData.updates}
+              onChange={handleChange}
+              className="h-3 w-3 text-indigo-500 focus:ring-indigo-400"
+            />
+            <label className="ml-2 text-gray-600 text-xs">
+              I agree to receive special offers and updates by email and SMS
+            </label>
+          </div>
 
-            {/* Order Number */}
-            <div className="relative">
-              <label className="block text-gray-700 font-medium text-sm mb-0.5">
-                Your Order Number <span className="text-indigo-500">*</span>
-              </label>
-              <input
-                type="text"
-                name="orderNumber"
-                value={formData.orderNumber}
-                onChange={handleChange}
-                placeholder="Enter your order number"
-                required
-                readOnly
-                className="w-full px-3 py-1.5 rounded-md border border-gray-200 bg-gray-50 text-gray-700 text-sm"
-              />
-            </div>
-
-            {/* Email */}
-            <div>
-              <label className="block text-gray-700 font-medium text-sm mb-0.5">Your Email Address <span className="text-indigo-500">*</span></label>
-              <input
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                placeholder="Enter your email address"
-                required
-                className="w-full px-3 py-1.5 rounded-md border border-gray-200 bg-gray-50 text-sm"
-              />
-            </div>
-
-            {/* Phone Number */}
-            <div>
-              <label className="block text-gray-700 font-medium text-sm mb-0.5">Your Phone Number</label>
-              <div className="flex gap-2">
-                <select name="countryCode" value={formData.countryCode} onChange={handleChange} className="px-2 py-1.5 rounded-md border border-gray-200 bg-gray-50 text-sm">
-                  {countryCodes.map(country => (
-                    <option key={country.code} value={country.code}>{country.code} {country.country}</option>
-                  ))}
-                </select>
+          {/* Satisfaction Radio */}
+          <div>
+            <label className="block text-gray-700 font-medium text-sm mb-1">
+              Are you satisfied with the product? <span className="text-indigo-500">*</span>
+            </label>
+            <div className="space-y-1">
+              <label className="flex items-center">
                 <input
-                  type="text"
-                  name="phoneNumber"
-                  value={formData.phoneNumber}
+                  type="radio"
+                  name="satisfied"
+                  value="yes"
+                  checked={formData.satisfied === "yes"}
                   onChange={handleChange}
-                  placeholder="Enter phone number"
-                  className="flex-1 px-2 sm:px-3 py-2 rounded-md border border-gray-200 bg-gray-50 text-xs sm:text-sm"
+                  required
+                  className="h-3 w-3 text-indigo-500"
                 />
-              </div>
+                <span className="ml-2 text-sm">Yes</span>
+              </label>
+              <label className="flex items-center">
+                <input
+                  type="radio"
+                  name="satisfied"
+                  value="no"
+                  checked={formData.satisfied === "no"}
+                  onChange={handleChange}
+                  className="h-3 w-3 text-indigo-500"
+                />
+                <span className="ml-2 text-sm">No</span>
+              </label>
             </div>
+          </div>
 
-            {/* Updates Checkbox */}
-            <div className="flex items-center">
-              <input type="checkbox" name="updates" checked={formData.updates} onChange={handleChange} className="h-3 w-3 text-indigo-500 focus:ring-indigo-400" />
-              <label className="ml-2 text-gray-600 text-xs">I agree to receive special offers and updates by email and SMS</label>
-            </div>
-
-            {/* Satisfaction Radio */}
-            <div>
-              <label className="block text-gray-700 font-medium text-sm mb-1">Are you satisfied with the product? <span className="text-indigo-500">*</span></label>
-              <div className="space-y-1">
-                <label className="flex items-center">
-                  <input type="radio" name="satisfied" value="yes" checked={formData.satisfied === "yes"} onChange={handleChange} required className="h-3 w-3 text-indigo-500" />
-                  <span className="ml-2 text-sm">Yes</span>
-                </label>
-                <label className="flex items-center">
-                  <input type="radio" name="satisfied" value="no" checked={formData.satisfied === "no"} onChange={handleChange} className="h-3 w-3 text-indigo-500" />
-                  <span className="ml-2 text-sm">No</span>
-                </label>
-              </div>
-            </div>
-
-            {/* Buttons */}
-            <div className="flex justify-between gap-3 mt-3">
-              <button type="button" onClick={() => navigate("/step_1", { state: formData })} className="w-1/3 py-1.5 text-gray-700 border border-gray-300 rounded text-sm hover:bg-gray-100 transition">Back</button>
-              <button type="submit" className={`flex-grow py-1.5 rounded text-white text-sm ${isFormValid ? 'bg-indigo-500 hover:bg-indigo-600 transition' : 'bg-gray-300 cursor-not-allowed'}`} disabled={!isFormValid}>Next</button>
-            </div>
-          </form>
-        </div>
+          {/* Buttons */}
+          <div className="flex justify-between gap-3 mt-3">
+            <button
+              type="button"
+              onClick={() => navigate("/step_1", { state: formData })}
+              className="w-1/3 py-1.5 text-gray-700 border border-gray-300 rounded text-sm hover:bg-gray-100 transition"
+            >
+              Back
+            </button>
+            <button
+              type="submit"
+              className={`flex-grow py-1.5 rounded text-white text-sm ${isFormValid ? "bg-indigo-500 hover:bg-indigo-600 transition" : "bg-gray-300 cursor-not-allowed"
+                }`}
+              disabled={!isFormValid}
+            >
+              Next
+            </button>
+            
+          </div>
+        </form>
       </div>
     </div>
   );
+
 }
 
 export default Step_2;
