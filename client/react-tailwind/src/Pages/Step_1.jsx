@@ -102,14 +102,7 @@ function Step_1() {
   return (
     // קונטיינר חיצוני עם ריווח פנימי (padding)
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 py-6 px-4 sm:py-12">
-      {/* הכרטיס הפנימי.
-        - `mx-auto` ממקם אותו במרכז האופקי.
-        - `w-full` גורם לו לתפוס את מלוא הרוחב *בתוך* ה-padding של האב.
-        - `max-w-md` מגביל אותו מלהיות רחב מדי במסכים גדולים.
-        זוהי השיטה האמינה והחסינה ביותר לפריסה מסוג זה.
-      */}
       <div className="w-full max-w-md mx-auto bg-white rounded-2xl shadow-xl border border-gray-200 p-6 sm:p-8">
-        
         <div className="text-center mb-4 sm:mb-6">
           <img
             src="/HevraCom-logo.png"
