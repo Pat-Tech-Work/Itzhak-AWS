@@ -52,8 +52,8 @@ function Step_4() {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if (!formData.review) {
-            alert("Lack of field of criticism");
+        if (!formData.review || formData.review.length < 5) {
+            alert("Please write at least 5 characters in the review.");
             return;
         }
 
@@ -62,6 +62,7 @@ function Step_4() {
             return;
         }
 
+        // שאר הקוד נשאר כמו שהוא
         try {
             const resultAction = await dispatch(createSurveyThunk(formData));
             const response = resultAction.payload;
@@ -82,14 +83,16 @@ function Step_4() {
         }
     };
 
+
     const isFormValid =
         formData.orderNumber &&
         formData.email &&
         formData.satisfied &&
         formData.name &&
-        formData.review.length >= 10 &&
+        formData.review.length >= 5 &&
         hasCopied &&
         clickedAmazonLink;
+    const isReviewTooShort = formData.review.length > 0 && formData.review.length < 5;
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 py-6 px-4 sm:py-12">
@@ -145,6 +148,11 @@ function Step_4() {
                                 placeholder="Share your experience..."
                                 required
                             />
+                            {isReviewTooShort && (
+                                <p className="text-red-500 text-xs mt-1">
+                                    Please write at least 5 characters.
+                                </p>
+                            )}
 
                             {isCustomerSatisfied && !hasCopied && (
                                 <p className="text-red-500 text-xs mt-1">
@@ -183,12 +191,16 @@ function Step_4() {
 
                             <button
                                 type="submit"
-                                className={`px-6 py-2 rounded-lg bg-indigo-500 text-white font-semibold hover:bg-indigo-600 transition ${isFormValid ? " bg-indigo-600 hover:bg-indigo-700 text-white rounded-md" : "bg-gray-300 cursor-not-allowed"
+                                className={`px-6 py-2 rounded-lg font-semibold transition
+    ${isFormValid
+                                        ? "bg-indigo-600 hover:bg-indigo-700 text-white cursor-pointer"
+                                        : "bg-gray-300 text-gray-500 cursor-not-allowed"
                                     }`}
                                 disabled={!isFormValid}
                             >
                                 Submit
                             </button>
+
 
                         </div>
                     </form>
